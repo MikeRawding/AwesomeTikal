@@ -2,7 +2,6 @@ package code;
 
 public class Tile {
 
-	//asdf
 	
 	private char letter;
 	
