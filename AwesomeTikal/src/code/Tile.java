@@ -2,6 +2,8 @@ package code;
 
 public class Tile {
 
+	private char letter;
+	
 	
 	/*
 	 * 
