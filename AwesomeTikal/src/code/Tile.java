@@ -2,11 +2,12 @@ package code;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import resources.InvalidMoveException;;
 
 public class Tile {
 
 	
-	private HashMap<Player, ArrayList<Piece>> pieces;
+	private HashMap<Player, ArrayList<Piece>> pieces = new HashMap<Player, ArrayList<Piece>>();
 	
 	private int[] sides;
 	
@@ -29,9 +30,23 @@ public class Tile {
 	public void addPiece(Player player, Piece newPiece){
 		
 		if(!(pieces.containsKey(player))){
-			pieces.put(player, new ArrayList());
+			pieces.put(player, new ArrayList<Piece>());
 		}
 		pieces.get(player).add(newPiece);
+				
+	}
+	
+	public void addPieceToBoard(Player player, Piece newPiece) throws InvalidMoveException{
+		if(player.getPiecesRemaing() == 0){
+			throw new InvalidMoveException("You have already exhausted your supply of explorers");
+		}
+		
+		if(!(pieces.containsKey(player))){
+			pieces.put(player, new ArrayList<Piece>());
+		}
+		pieces.get(player).add(newPiece);
+		player.setPiecesRemaining(player.getPiecesRemaing()-1);
+		
 				
 	}
 	
