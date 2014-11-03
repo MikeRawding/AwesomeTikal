@@ -62,7 +62,7 @@ public class Temple extends Tile {
 		}
 		
 		if(tie){
-			throw new NoOwnerException("This tile has no owner");
+			throw new NoOwnerException("This tile has no owner due to a tie");
 		}
 		else{
 			return tempMax.getKey();
