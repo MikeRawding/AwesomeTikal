@@ -55,7 +55,7 @@ public class Temple extends Tile {
 		    	tempMax = entry;
 		    	tie = false;
 		    }
-		    else if(entry.getValue().size() == tempMax.getValue().size() && entry.getValue() != tempMax.getValue()){
+		    else if(entry.getValue().size() == tempMax.getValue().size()){
 		    	tie = true;
 		    }
 		}

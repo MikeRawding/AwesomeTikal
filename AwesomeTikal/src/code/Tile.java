@@ -78,8 +78,27 @@ public class Tile {
 	public HashMap<Player, ArrayList<Piece>> getPieces(){
 		return pieces;
 	}
-	
 
+	
+	//Need to work out owner method
+	public Player owner() throws UnoccupiedTileException{
+		//UNTESTED, MIGHT WORK, WILL RETURN EITHER PLAYER IN EVENT OF A TIE
+		if(this.isUnoccupied()){
+			throw new UnoccupiedTileException("This tile has no owner");
+		}
+		
+		Entry<Player, ArrayList<Piece>> tempMax = pieces.entrySet().iterator().next();
+		
+		for (Entry<Player, ArrayList<Piece>> entry : pieces.entrySet()) {
+		    if(entry.getValue().size() > tempMax.getValue().size()){
+		    	tempMax = entry;
+		    }
+		    
+		}
+		
+		return tempMax.getKey();
+		
+	}
 
 	public boolean isUnoccupied(){
 		//returns true if pieces is empty or if each ArrayList in pieces is size 0
