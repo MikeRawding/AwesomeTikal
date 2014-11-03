@@ -1,5 +1,8 @@
 package code;
 
+import java.util.ArrayList;
+import java.util.Map.Entry;
+
 import resources.InvalidMoveException;
 import resources.UnoccupiedTileException;
 
@@ -35,15 +38,12 @@ public class Temple extends Tile {
 		guard = player;
 	}
 	
-	//STUBBED OUT METHOD NEEDS SAME IMPLEMENTATION AS SUPERCLASS FOR DETERMINING OWNER
+	
 	public Player owner() throws UnoccupiedTileException{
 		if(isGuarded){
 			return guard;
 		}
-		if(this.isUnoccupied()){
-			throw new UnoccupiedTileException("This tile has no owner");
-		}
-		return(new Player("fred", "blue"));
+		return super.owner();
 	}
 	
 

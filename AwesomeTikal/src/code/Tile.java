@@ -2,6 +2,7 @@ package code;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import resources.*;
@@ -9,7 +10,7 @@ import resources.*;
 public class Tile {
 
 	
-	private HashMap<Player, ArrayList<Piece>> pieces = new HashMap<Player, ArrayList<Piece>>();
+	protected HashMap<Player, ArrayList<Piece>> pieces = new HashMap<Player, ArrayList<Piece>>();
 	
 	private int[] sides;
 	
@@ -80,50 +81,36 @@ public class Tile {
 	
 	//Need to work out owner method
 	public Player owner() throws UnoccupiedTileException{
-		return new Player("Fred", "Blue");
-	}
-		/*	if(!(this.isUnoccupied())){
+		//UNTESTED, MIGHT WORK, WILL RETURN EITHER PLAYER IN EVENT OF A TIE
+		if(this.isUnoccupied()){
 			throw new UnoccupiedTileException("This tile has no owner");
 		}
-		Player tempMax = pieces.entrySet().
-		for (Entry<Player, ArrayList<Piece>> entry : pieces.entrySet()) {
-		    Player key = entry.getKey();
-		    ArrayList<Piece> value = entry.getValue();
-		}
-	}*/
 		
-		//return player with most pieces
+		Entry<Player, ArrayList<Piece>> tempMax = pieces.entrySet().iterator().next();
+		
+		for (Entry<Player, ArrayList<Piece>> entry : pieces.entrySet()) {
+		    if(entry.getValue().size() > tempMax.getValue().size()){
+		    	tempMax = entry;
+		    }
+		}
+		
+		return tempMax.getKey();
+		
+	}
+
 
 	public boolean isUnoccupied(){
 		//returns true if pieces is empty or if each ArrayList in pieces is size 0
 		if(pieces.isEmpty()){
 			return true;
 		}
-		for(ArrayList<Piece> value : pieces.values()){
-			if(value.size() > 0){
-				return false;
-			}
+		for (Entry<Player, ArrayList<Piece>> entry : pieces.entrySet()) {
+		    if(entry.getValue().size() > 0){
+		    	return false;
+		    }
 		}
 		return true;	
 	}
-	
-	
-	
-	/*
-	 * 
-	 * 
-	 * 
-	 * THIS TEST MESSAGE WAS WRITTEN IN ECLIPSE ON MIKE'S PC.
-	 * 
-	 * "Tarik was here"
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 */
 	
 	
 }
