@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Map.Entry;
 
 import resources.InvalidMoveException;
+import resources.NoOwnerException;
 import resources.UnoccupiedTileException;
 
 public class Temple extends Tile {
@@ -22,7 +23,7 @@ public class Temple extends Tile {
 		return templeValue++;
 	}
 	
-	public void setGuard(Player player) throws InvalidMoveException{
+	public void setGuard(Player player) throws InvalidMoveException, NoOwnerException{
 		try{	
 			if(!(this.owner().equals(player))){
 				throw new InvalidMoveException("You must be the owner of the tile to guard a temple");
@@ -39,12 +40,32 @@ public class Temple extends Tile {
 	}
 	
 	
-	public Player owner() throws UnoccupiedTileException{
+	public Player owner() throws UnoccupiedTileException, NoOwnerException{
 		if(isGuarded){
 			return guard;
 		}
-		return super.owner();
+		if(this.isUnoccupied()){
+			throw new UnoccupiedTileException("This tile has no owner");
+		}
+		
+		Entry<Player, ArrayList<Piece>> tempMax = pieces.entrySet().iterator().next();
+		boolean tie = false;
+		for (Entry<Player, ArrayList<Piece>> entry : pieces.entrySet()) {
+		    if(entry.getValue().size() > tempMax.getValue().size()){
+		    	tempMax = entry;
+		    	tie = false;
+		    }
+		    else if(entry.getValue().size() == tempMax.getValue().size()){
+		    	tie = true;
+		    }
+		}
+		
+		if(tie){
+			throw new NoOwnerException("This tile has no owner");
+		}
+		else{
+			return tempMax.getKey();
+		}
 	}
-	
 
 }
