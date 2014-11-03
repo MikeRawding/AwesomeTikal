@@ -42,5 +42,25 @@ public class ReferenceTests {
 			e.printStackTrace();
 		}
 	}
-
+	
+	@Test
+	public void ownerTest02(){
+		Player player01 = new Player("Mike", "Yellow");
+		Player player02 = new Player("Tom", "Blue");
+		Temple tile01 = new Temple(1);
+	
+		assertTrue(tile01.isUnoccupied());
+		
+	}
+	
+	@Test
+	public void ownerTest03(){
+		Player player01 = new Player("Mike", "Yellow");
+		Player player02 = new Player("Tom", "Blue");
+		Temple tile01 = new Temple(1);
+		tile01.addPiece(player01, new Piece(player01));
+	
+		assertFalse(tile01.isUnoccupied());
+		
+	}
 }
