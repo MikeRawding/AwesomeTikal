@@ -30,6 +30,7 @@ public class ReferenceTests {
 		Player player01 = new Player("Mike", "Yellow");
 		Player player02 = new Player("Tom", "Blue");
 <<<<<<< HEAD
+<<<<<<< HEAD
 		Temple tile01 = new Temple(1);
 		tile01.addPiece(player01, new Piece(player01));
 		tile01.addPiece(player01, new Piece(player01));
@@ -47,6 +48,16 @@ public class ReferenceTests {
 		tile01.addPiece(player02, new Piece(player02));
 		try {
 			assertTrue(tile01.owner().equals(player01));
+=======
+		Temple temple01 = new Temple(1);
+		temple01.addPiece(player01, new Piece(player01));
+		temple01.addPiece(player01, new Piece(player01));
+		temple01.addPiece(player02, new Piece(player02));
+		temple01.addPiece(player02, new Piece(player02));
+		temple01.addPiece(player02, new Piece(player02));
+		try {
+			assertTrue(temple01.owner().equals(player02));
+>>>>>>> FETCH_HEAD
 =======
 		Temple temple01 = new Temple(1);
 		temple01.addPiece(player01, new Piece(player01));
@@ -100,4 +111,8 @@ public class ReferenceTests {
 		assertFalse(tile01.isUnoccupied());
 		
 	}
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> FETCH_HEAD
