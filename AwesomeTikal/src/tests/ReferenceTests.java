@@ -67,6 +67,20 @@ public class ReferenceTests {
 		assertFalse(tile01.isUnoccupied());
 		
 	}
+	
+	public void ownerTest05(){
+		Player player01 = new Player("Mike", "Yellow");
+		Player player02 = new Player("Tom", "Blue");
+		Temple tile01 = new Temple(1);
+		tile01.addPiece(player01, new Piece(player01));
+		tile01.addPiece(player01, new Piece(player01));
+		tile01.setGaurd(player01);
+		tile01.addPiece(player02, new Piece(player02));
+		tile01.addPiece(player02, new Piece(player02));
+		tile01.addPiece(player02, new Piece(player02));
+		
+		assertTrue(tile01.owner().equals(player01), "Temple returning player 2 as owner despite being guarded by 1");
+	}
 
 }
 
