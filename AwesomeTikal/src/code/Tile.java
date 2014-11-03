@@ -78,6 +78,8 @@ public class Tile {
 	public HashMap<Player, ArrayList<Piece>> getPieces(){
 		return pieces;
 	}
+<<<<<<< HEAD
+=======
 	
 	//Need to work out owner method
 	public Player owner() throws UnoccupiedTileException{
@@ -99,6 +101,7 @@ public class Tile {
 		
 	}
 
+>>>>>>> FETCH_HEAD
 
 	public boolean isUnoccupied(){
 		//returns true if pieces is empty or if each ArrayList in pieces is size 0
