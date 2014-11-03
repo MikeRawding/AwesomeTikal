@@ -37,6 +37,7 @@ public class Temple extends Tile {
 		}
 		isGuarded = true;
 		guard = player;
+		pieces.get(player).clear();
 	}
 	
 	
