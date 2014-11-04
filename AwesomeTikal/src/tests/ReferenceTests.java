@@ -74,12 +74,48 @@ public class ReferenceTests {
 		Temple tile01 = new Temple(1);
 		tile01.addPiece(player01, new Piece(player01));
 		tile01.addPiece(player01, new Piece(player01));
-		tile01.setGaurd(player01);
+		try {
+			tile01.setGuard(player01);
+		} catch (InvalidMoveException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoOwnerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		tile01.addPiece(player02, new Piece(player02));
 		tile01.addPiece(player02, new Piece(player02));
 		tile01.addPiece(player02, new Piece(player02));
 		
-		assertTrue(tile01.owner().equals(player01), "Temple returning player 2 as owner despite being guarded by 1");
+		try {
+			assertTrue("Temple returning player 2 as owner despite being guarded by 1", tile01.owner().equals(player01));
+		} catch (UnoccupiedTileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoOwnerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	public void removePieceTest06(){
+		Player player01 = new Player("Taiga", "Red");
+        Tile tile01 = new Tile();
+        try {
+			tile01.addPieceToBoard(player01,new Piece(player01));
+		} catch (InvalidMoveException e) {
+			System.out.println(e.getMessage());
+		}
+      try {
+		tile01.addPieceToBoard(player01, new Piece(player01));
+	} catch (InvalidMoveException e) {
+		System.out.println(e.getMessage());
+	}
+      try {
+		tile01.removePiece(player01);
+	} catch (InvalidMoveException e) {
+		System.out.println(e.getMessage());
+	}
+      assertTrue(player01.getPiecesRemaing()==8);
 	}
 
 }
