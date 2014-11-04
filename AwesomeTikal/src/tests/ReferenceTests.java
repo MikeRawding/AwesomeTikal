@@ -74,13 +74,27 @@ public class ReferenceTests {
 		Temple tile01 = new Temple(1);
 		tile01.addPiece(player01, new Piece(player01));
 		tile01.addPiece(player01, new Piece(player01));
-		tile01.setGuard(player01);
+		try {
+			tile01.setGuard(player01);
+		} catch (InvalidMoveException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoOwnerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		tile01.addPiece(player02, new Piece(player02));
 		tile01.addPiece(player02, new Piece(player02));
 		tile01.addPiece(player02, new Piece(player02));
-		
-		assertTrue("Temple returning player 2 as owner despite being guarded by 1", tile01.owner().equals(player01));
+		try {
+			assertTrue("Temple returning player 2 as owner despite being guarded by 1", tile01.owner().equals(player01));
+		} catch (UnoccupiedTileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoOwnerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
-
 }
 
