@@ -2,6 +2,7 @@ package code;
 //Would this work for us?
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 
 import javax.swing.JButton;
@@ -13,11 +14,12 @@ public class Board{
 	public Board(int width, int length){
 		JButton[][] grid = new JButton[width][length];
 		JFrame frame = new JFrame("Welcome to Tikal");
+		frame.setSize(new Dimension(1000,800));
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(width,length));
 		for(int y=0; y<length; y++){
 			for(int x=0; x<width; x++){
-				grid[x][y]=new JButton("("+x+","+y+")"); //creates new button     
+				grid[x][y]=new JButton("" +x+ "" +y+ ""); //creates new button     
 				frame.add(grid[x][y]); //adds button to grid
 			}
 		}

@@ -39,10 +39,9 @@ public class ReferenceTests {
 			assertTrue(temple01.owner().equals(player02));
 		} catch (UnoccupiedTileException e) {
 			System.out.println(e.getMessage());
-			e.printStackTrace();
 		} catch (NoOwnerException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println(e.getMessage());
+			System.out.println("Tie expected");
 		}
 	}
 	
@@ -68,7 +67,8 @@ public class ReferenceTests {
 		
 	}
 	
-	public void ownerTest05(){
+	@Test
+	public void ownerTest05() throws InvalidMoveException, NoOwnerException, UnoccupiedTileException{
 		Player player01 = new Player("Mike", "Yellow");
 		Player player02 = new Player("Tom", "Blue");
 		Temple tile01 = new Temple(1);
@@ -86,7 +86,6 @@ public class ReferenceTests {
 		tile01.addPiece(player02, new Piece(player02));
 		tile01.addPiece(player02, new Piece(player02));
 		tile01.addPiece(player02, new Piece(player02));
-		
 		try {
 			assertTrue("Temple returning player 2 as owner despite being guarded by 1", tile01.owner().equals(player01));
 		} catch (UnoccupiedTileException e) {
