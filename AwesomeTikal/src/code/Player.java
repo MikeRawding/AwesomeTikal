@@ -7,6 +7,8 @@ public class Player {
 	private Color color;
 	private String name;
 	
+	
+	
 	private int piecesRemaining; 
 	
 	public Color getColor(){
@@ -26,4 +28,6 @@ public class Player {
 	public void setPiecesRemaining(int n){
 		piecesRemaining = n;
 	}
+	
+	
 }

@@ -7,6 +7,7 @@ public class GameModel {
 
 	private static ArrayList<Player> playerList = new ArrayList<Player>();
 	private static int currentPlayer;
+	private static int actionPoints = 10;
 	
 	public static Player getPlayer(){
 		return playerList.get(currentPlayer);
@@ -19,10 +20,13 @@ public class GameModel {
 		else{
 			currentPlayer = 0;
 		}
+		actionPoints = 10;
 		return playerList.get(currentPlayer);
 	}
 	
-	
+	public static int getActionPoints(){
+		return actionPoints;
+	}
 	
 	
 	public GameModel(){
