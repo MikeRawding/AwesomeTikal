@@ -1,13 +1,19 @@
 package code;
 
+import java.awt.Color;
+
 public class Player {
 
-	private String color;
+	private Color color;
 	private String name;
 	
 	private int piecesRemaining; 
 	
-	public Player (String name, String color){
+	public Color getColor(){
+		return color;
+	}
+	
+	public Player (String name, Color color){
 		this.name = name;
 		this.color = color;
 		piecesRemaining = 10;

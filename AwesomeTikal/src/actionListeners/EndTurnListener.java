@@ -6,6 +6,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+import code.GameModel;
+
 
 public class EndTurnListener implements ActionListener{
 
@@ -17,8 +19,7 @@ public class EndTurnListener implements ActionListener{
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		System.out.print("TTESTESTETEST");
-		panel.setBackground(Color.green);
+		panel.setBackground(GameModel.nextPlayer().getColor());
 		
 	}
 	

@@ -35,7 +35,7 @@ public class Board{
 		//frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(),0));
 		
 		JPanel masterPanel = new JPanel();
-		masterPanel.setLayout(new BoxLayout(masterPanel,0));
+		masterPanel.setLayout(new BoxLayout(masterPanel,BoxLayout.X_AXIS));
 		frame.add(masterPanel);
 		
 		
@@ -62,11 +62,8 @@ public class Board{
 		endTurn.setMaximumSize(endTurn.getSize());
 		endTurn.setMinimumSize(endTurn.getSize());
 		endTurn.addActionListener(new EndTurnListener(menuBar));
-		
 		menuBar.add(endTurn);
-		
-		
-		
+
 		masterPanel.add(menuBar);
 				
 		
@@ -109,7 +106,5 @@ public class Board{
 		
 	}	
 		
-	public static void main(String[] arg){
-		new Board();
-	}
+
 }
