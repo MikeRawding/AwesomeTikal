@@ -1,6 +1,8 @@
 package tests;
 import static org.junit.Assert.*;
 
+import java.awt.Color;
+
 import org.junit.*;
 
 import code.*;
@@ -14,7 +16,7 @@ public class ReferenceTests {
 	
 	@Test
 	public void addPieceToBoardTest01(){
-		Player player01 = new Player("Mike", "Yellow");
+		Player player01 = new Player("Mike", Color.YELLOW);
 		Tile tile01 = new Tile();
 		try{
 			tile01.addPieceToBoard(player01, new Piece(player01));
@@ -28,8 +30,8 @@ public class ReferenceTests {
 	
 	@Test
 	public void ownerTest02(){
-		Player player01 = new Player("Mike", "Yellow");
-		Player player02 = new Player("Tom", "Blue");
+		Player player01 = new Player("Mike", Color.YELLOW);
+		Player player02 = new Player("Tom", Color.BLUE);
 		Temple temple01 = new Temple(1);
 		temple01.addPiece(player01, new Piece(player01));
 		temple01.addPiece(player01, new Piece(player01));
@@ -47,8 +49,8 @@ public class ReferenceTests {
 	
 	@Test
 	public void ownerTest03(){
-		Player player01 = new Player("Mike", "Yellow");
-		Player player02 = new Player("Tom", "Blue");
+		Player player01 = new Player("Mike", Color.YELLOW);
+		Player player02 = new Player("Tom", Color.BLUE);
 		Temple temple01 = new Temple(1);
 	
 		assertTrue(temple01.isUnoccupied());
@@ -58,8 +60,8 @@ public class ReferenceTests {
 	
 	@Test
 	public void ownerTest04(){
-		Player player01 = new Player("Mike", "Yellow");
-		Player player02 = new Player("Tom", "Blue");
+		Player player01 = new Player("Mike", Color.YELLOW);
+		Player player02 = new Player("Tom", Color.BLUE);
 		Temple tile01 = new Temple(1);
 		tile01.addPiece(player01, new Piece(player01));
 	
@@ -69,8 +71,8 @@ public class ReferenceTests {
 	
 	@Test
 	public void ownerTest05() throws InvalidMoveException, NoOwnerException, UnoccupiedTileException{
-		Player player01 = new Player("Mike", "Yellow");
-		Player player02 = new Player("Tom", "Blue");
+		Player player01 = new Player("Mike", Color.YELLOW);
+		Player player02 = new Player("Tom", Color.BLUE);
 		Temple tile01 = new Temple(1);
 		tile01.addPiece(player01, new Piece(player01));
 		tile01.addPiece(player01, new Piece(player01));

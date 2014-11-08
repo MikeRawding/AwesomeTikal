@@ -1,13 +1,7 @@
 package code;
-//Would this work for us?
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.LayoutManager;
-import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -17,12 +11,14 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import actionListeners.AddTileListener;
 import actionListeners.EndTurnListener;
 
 public class Board{
 
 	private JPanel[][] grid;
 	private JPanel[] columns;
+	
 	
 	public Board(){
 		grid = new JPanel[6][6];
@@ -71,19 +67,16 @@ public class Board{
 		masterPanel.add(menuBar);
 		
 		
-		//simply shows functionality of adding a tile
-		Tile temp = new Tile();
-		
-		grid[0][2] = temp.getTilePanel();
-		columns[0].removeAll();
-		for(int i = 0; i < grid[0].length-1; i++){
-			columns[0].add(grid[0][i]);
-		}
 		
 		
 		
 		
 		
+		
+	}
+	private Component spacer(){
+		Component spacer = Box.createRigidArea(new Dimension(200,100));
+		return spacer;
 	}
 
 	private void populateColumns(JPanel boardPanel) {
@@ -95,12 +88,12 @@ public class Board{
 		for(int x=0; x<columns.length; x++){
 			boardPanel.add(columns[x]);
 			if(x%2==0){
-				columns[x].add(Box.createRigidArea(new Dimension(200,100))); //spacing panel
+				columns[x].add(spacer()); //spacing panel
 				columns[x].getComponent(0).setSize(100, 100);
 				for(int y=0; y<5; y++){
 					makeTileSpace(Color.cyan,x,y);
 				}
-				columns[x].add(Box.createRigidArea(new Dimension(200,100))); //spacing panel
+				columns[x].add(spacer()); //spacing panel
 			}
 			else{
 				for(int y=0; y<6; y++){
@@ -109,6 +102,21 @@ public class Board{
 			}
 		
 		}
+	}
+	
+	public void addTile(int x, int y){
+		
+		grid[x][y]= new Tile().getTilePanel();
+		
+		
+		columns[x].removeAll();
+		int length = 6;
+		if(x%2 == 0){length = 5;}
+		
+		for(int i = 0; i < length; i++){
+			columns[x].add(grid[x][i]);
+		}
+		columns[x].repaint();
 	}
 
 	private void makeTileSpace(Color color, Integer x, Integer y){
@@ -119,11 +127,15 @@ public class Board{
 		grid[x][y].setSize(new Dimension(250,180));
 		grid[x][y].setMaximumSize(grid[x][y].getSize());
 		grid[x][y].setMinimumSize(grid[x][y].getSize());
-		grid[x][y].add(new JButton("place tile"));
+		
+		JButton temp = new JButton("Place Tile");
+		temp.addActionListener(new AddTileListener(this,x,y));
+		grid[x][y].add(temp);
 		
 		columns[x].add(grid[x][y]); //adds button to grid
 		
-	}	
-		
+	}
+	
+
 
 }
