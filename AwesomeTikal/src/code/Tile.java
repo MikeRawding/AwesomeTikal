@@ -1,9 +1,15 @@
 package code;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
 
 import resources.*;
 
@@ -13,6 +19,50 @@ public class Tile {
 	protected HashMap<Player, ArrayList<Piece>> pieces = new HashMap<Player, ArrayList<Piece>>();
 	
 	private int[] sides;
+	private JPanel tilePanel = new JPanel();
+	private JPanel top = new JPanel();
+	private JPanel center = new JPanel();
+	private JPanel bottom = new JPanel();
+	private JPanel[] paths = new JPanel[6];
+	
+	public Tile(){
+		initPanel();
+	}
+	
+	public JPanel getTilePanel(){
+		return tilePanel;
+	}
+	
+	private void initPanel(){
+		for(int i = 0; i < paths.length; i++){
+			paths[i] = new JPanel();
+			paths[i].setBorder(BorderFactory.createLineBorder(Color.black, 5, false));
+			paths[i].setBackground(Color.gray);
+			paths[i].repaint();
+		}
+		
+		tilePanel.setLayout(new BoxLayout(tilePanel, BoxLayout.Y_AXIS));
+		tilePanel.setSize(250, 180);
+		tilePanel.setMaximumSize(tilePanel.getSize());
+		tilePanel.setMinimumSize(tilePanel.getSize());
+		top.setLayout(new BorderLayout());
+		top.add(paths[0],BorderLayout.WEST);
+		top.add(paths[1],BorderLayout.NORTH);
+		top.add(paths[2],BorderLayout.EAST);
+		bottom.setLayout(new BorderLayout());
+		bottom.add(paths[3],BorderLayout.EAST);
+		bottom.add(paths[4],BorderLayout.SOUTH);
+		bottom.add(paths[5],BorderLayout.WEST);
+		
+		
+		
+		tilePanel.add(top);
+		tilePanel.add(center);
+		tilePanel.add(bottom);
+		
+	}
+	
+	
 	
 	public void rotateClockwise(){
 		//decrements the values in sides[]. i.e. sides[0] gets sides[1], sides[sides.length] gets sides[0]
@@ -91,6 +141,11 @@ public class Tile {
 		}
 		return true;	
 	}
+	
+	//Define JPanel for tile
+	
+	
+	
 	
 	
 }

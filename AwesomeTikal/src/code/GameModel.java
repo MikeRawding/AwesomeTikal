@@ -50,6 +50,8 @@ public class GameModel {
 		Player p2 = new Player("Mike", Color.ORANGE);
 		GameModel.getPlayerList().add(p1);
 		GameModel.getPlayerList().add(p2);
+		
+		
 
 	}
 

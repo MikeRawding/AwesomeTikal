@@ -29,7 +29,7 @@ public class Board{
 		
 		//Frame setup
 		JFrame frame = new JFrame("Welcome to Tikal (the game of stealing from the natives)");
-		frame.setSize(new Dimension(1800,1000));
+		frame.setSize(new Dimension(1800,1100));
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(),0));
@@ -71,6 +71,16 @@ public class Board{
 		masterPanel.add(menuBar);
 		
 		
+		//simply shows functionality of adding a tile
+		Tile temp = new Tile();
+		
+		grid[0][2] = temp.getTilePanel();
+		columns[0].removeAll();
+		for(int i = 0; i < grid[0].length-1; i++){
+			columns[0].add(grid[0][i]);
+		}
+		
+		
 		
 		
 		
@@ -102,7 +112,7 @@ public class Board{
 	}
 
 	private void makeTileSpace(Color color, Integer x, Integer y){
-		grid[x][y]=new JPanel(); //creates new button 
+		grid[x][y] = new JPanel(); //creates new button 
 		grid[x][y].setBackground(color);
 		grid[x][y].repaint();
 		grid[x][y].setBorder(BorderFactory.createLineBorder(Color.black, 5, false));
@@ -110,6 +120,7 @@ public class Board{
 		grid[x][y].setMaximumSize(grid[x][y].getSize());
 		grid[x][y].setMinimumSize(grid[x][y].getSize());
 		grid[x][y].add(new JButton("place tile"));
+		
 		columns[x].add(grid[x][y]); //adds button to grid
 		
 	}	
