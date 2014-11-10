@@ -6,21 +6,31 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+import resources.NoTilesRemainException;
+import code.Board;
 import code.GameModel;
 
 
 public class EndTurnListener implements ActionListener{
 
 	JPanel panel;
+	Board b;
 	
-	public EndTurnListener(JPanel p){
+	public EndTurnListener(Board b, JPanel p){
 		panel = p;
+		this.b = b;
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		panel.setBackground(GameModel.nextPlayer().getColor());
-		
+		try {
+			GameModel.nextTile();
+		} catch (NoTilesRemainException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		b.refreshOnDeckPreview();
 	}
 	
 

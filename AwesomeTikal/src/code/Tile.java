@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import resources.*;
@@ -24,7 +25,8 @@ public class Tile {
 	private JPanel bottom = new JPanel();
 	private JPanel[] paths = new JPanel[6];
 	
-	public Tile(){
+	public Tile(int[] sides){
+		this.sides = sides;
 		initPanel();
 	}
 	
@@ -37,7 +39,7 @@ public class Tile {
 			paths[i] = new JPanel();
 			paths[i].setBorder(BorderFactory.createLineBorder(Color.black, 5, false));
 			paths[i].setBackground(Color.gray);
-			paths[i].repaint();
+			paths[i].add(new JLabel(""+sides[i]+""));
 			paths[i].setVisible(true);
 		}
 		
@@ -68,22 +70,30 @@ public class Tile {
 	
 	
 	
-	public void rotateClockwise(){
+	public void rotateCounterClockwise(){
 		//decrements the values in sides[]. i.e. sides[0] gets sides[1], sides[sides.length] gets sides[0]
 		int temp = sides[0];
 		for(int i = 0; i < sides.length-1; i++){
 			sides[i] = sides[i+1];
 		}
-		sides[sides.length] = temp;	
+		sides[sides.length-1] = temp;	
+		for(int i = 0; i < paths.length; i ++){
+			paths[i].removeAll();
+			paths[i].add(new JLabel(""+sides[i]+""));
+		}
 	}
 	
-	public void rotateCounterClockwise(){
+	public void rotateClockwise(){
 		//increments the values in sides[]. i.e. sides[1] gets sides[0], sides [0] gets sides[sides.length]
-		int temp = sides[sides.length];
-		for(int i = sides.length; i > 0; i--){
+		int temp = sides[sides.length-1];
+		for(int i = sides.length-1; i > 0; i--){
 			sides[i]=sides[i-1]; 
 		}
 		sides[0] = temp;
+		for(int i = 0; i < paths.length; i ++){
+			paths[i].removeAll();
+			paths[i].add(new JLabel(""+sides[i]+""));
+		}
 	}
 		
 	public static void move(Player player,Tile location, Tile destination) throws InvalidMoveException{

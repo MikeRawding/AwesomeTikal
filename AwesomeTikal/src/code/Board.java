@@ -18,8 +18,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import resources.NoTilesRemainException;
 import actionListeners.AddTileListener;
 import actionListeners.EndTurnListener;
+import actionListeners.RotateListener;
 
 public class Board{
 
@@ -30,6 +32,7 @@ public class Board{
 	private JPanel menuPanel; //panel for menu bar
 	private JPanel[] columns; //6 vertical columns to assist in a grid layout
 	private JPanel[][] grid; //Each space for a tile is stored here
+	private JPanel onDeckPreview;
 	
 	
 	//The only constructor of this class.  GUI is displayed when constructed.
@@ -56,6 +59,10 @@ public class Board{
 		grid = new JPanel[6][6];
 		populateColumns(boardPanel);
 		
+		
+		//Get onDeckTile
+		
+		
 		//Make and add menu bar
 		menuPanel = new JPanel();
 		menuPanel.setLayout(new BoxLayout(menuPanel,1));
@@ -68,12 +75,24 @@ public class Board{
 			endTurn.setSize(300, 100);
 			endTurn.setMaximumSize(endTurn.getSize());
 			endTurn.setMinimumSize(endTurn.getSize());
-			endTurn.addActionListener(new EndTurnListener(menuPanel));
+			endTurn.addActionListener(new EndTurnListener(this,menuPanel));
 			menuPanel.add(endTurn);
 		
 			//AP counter
 			JLabel aP = new JLabel(""+GameModel.getActionPoints()+"");
 			menuPanel.add(aP);
+			
+			//new tile preview
+			onDeckPreview = GameModel.onDeckTile.getTilePanel();
+			menuPanel.add(onDeckPreview);
+			
+			//rotate buttonOnDeck
+			JButton rotateOnDeckCloclwise = new JButton("Rotate");
+			rotateOnDeckCloclwise.setSize(100,100);
+			rotateOnDeckCloclwise.setMaximumSize(rotateOnDeckCloclwise.getSize());
+			rotateOnDeckCloclwise.setMaximumSize(rotateOnDeckCloclwise.getSize());
+			rotateOnDeckCloclwise.addActionListener(new RotateListener(this, true));
+			menuPanel.add(rotateOnDeckCloclwise);
 
 		masterPanel.add(menuPanel);
 		
@@ -118,7 +137,7 @@ public class Board{
 	//Incomplete method for adding Panels form Tile class to Board
 	public void addTile(int x, int y){
 		
-		grid[x][y]= new Tile().getTilePanel();
+		grid[x][y]= GameModel.onDeckTile.getTilePanel();
 		columns[x].removeAll();
 		if(x%2 == 0){
 			columns[x].add(spacer());
@@ -153,6 +172,10 @@ public class Board{
 		
 	}
 	
-
+	public void refreshOnDeckPreview(){
+		onDeckPreview = GameModel.onDeckTile.getTilePanel();
+		menuPanel.add(onDeckPreview);
+		frame.setSize(new Dimension(1800,1100));
+	}
 
 }
