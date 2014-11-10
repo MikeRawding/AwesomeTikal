@@ -1,3 +1,10 @@
+/*The Board class defines the board GUI for the game.  
+ * 
+ * 
+ */
+
+
+
 package code;
 import java.awt.Color;
 import java.awt.Component;
@@ -16,69 +23,72 @@ import actionListeners.EndTurnListener;
 
 public class Board{
 
-	private JPanel[][] grid;
-	private JPanel[] columns;
+	
+	private JFrame frame; 
+	private JPanel masterPanel; //panel for entire frame
+	private JPanel boardPanel; //panel for tile area
+	private JPanel menuPanel; //panel for menu bar
+	private JPanel[] columns; //6 vertical columns to assist in a grid layout
+	private JPanel[][] grid; //Each space for a tile is stored here
 	
 	
+	//The only constructor of this class.  GUI is displayed when constructed.
 	public Board(){
-		grid = new JPanel[6][6];
 		
 		//Frame setup
-		JFrame frame = new JFrame("Welcome to Tikal (the game of stealing from the natives)");
+		frame = new JFrame("Welcome to Tikal (the game of stealing from the natives)");
 		frame.setSize(new Dimension(1800,1100));
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(),0));
 		
-		JPanel masterPanel = new JPanel();
+		//Panel for entire board
+		masterPanel = new JPanel();
 		masterPanel.setLayout(new BoxLayout(masterPanel,BoxLayout.X_AXIS));
 		frame.add(masterPanel);
 		
-		
-		//boardPanel setup
-		JPanel boardPanel = new JPanel();
+		//Panel for grid of tiles
+		boardPanel = new JPanel();
 		boardPanel.setLayout(new BoxLayout(boardPanel,0));
 		masterPanel.add(boardPanel);
 		
+		//Fills columns with Panels form grid
 		columns = new JPanel[6];
-		
+		grid = new JPanel[6][6];
 		populateColumns(boardPanel);
 		
 		//Make and add menu bar
-		JPanel menuBar = new JPanel();
-		menuBar.setLayout(new BoxLayout(menuBar,1));
-		menuBar.setBackground(Color.blue);
-		menuBar.setSize(300, 900);
-		menuBar.setMaximumSize(menuBar.getSize());
+		menuPanel = new JPanel();
+		menuPanel.setLayout(new BoxLayout(menuPanel,1));
+		menuPanel.setBackground(Color.blue);
+		menuPanel.setSize(300, 900);
+		menuPanel.setMaximumSize(menuPanel.getSize());
 		
+			//endTurn button
+			JButton endTurn = new JButton("End Turn");
+			endTurn.setSize(300, 100);
+			endTurn.setMaximumSize(endTurn.getSize());
+			endTurn.setMinimumSize(endTurn.getSize());
+			endTurn.addActionListener(new EndTurnListener(menuPanel));
+			menuPanel.add(endTurn);
 		
-		//endTurn button
-		JButton endTurn = new JButton("End Turn");
-		endTurn.setSize(300, 100);
-		endTurn.setMaximumSize(endTurn.getSize());
-		endTurn.setMinimumSize(endTurn.getSize());
-		endTurn.addActionListener(new EndTurnListener(menuBar));
-		menuBar.add(endTurn);
-		
-		//AP counter
-		JLabel aP = new JLabel(""+GameModel.getActionPoints()+"");
-		menuBar.add(aP);
+			//AP counter
+			JLabel aP = new JLabel(""+GameModel.getActionPoints()+"");
+			menuPanel.add(aP);
 
-		masterPanel.add(menuBar);
-		
-		
-		
-		
-		
+		masterPanel.add(menuPanel);
 		
 		
 		
 	}
+	
+	//Spacer used to create stagger between columns
 	private Component spacer(){
 		Component spacer = Box.createRigidArea(new Dimension(200,100));
 		return spacer;
 	}
 
+	
+	
 	private void populateColumns(JPanel boardPanel) {
 		for(int i = 0; i < columns.length; i++){
 			columns[i] = new JPanel();
@@ -104,19 +114,26 @@ public class Board{
 		}
 	}
 	
+	
+	//Incomplete method for adding Panels form Tile class to Board
 	public void addTile(int x, int y){
 		
 		grid[x][y]= new Tile().getTilePanel();
-		
-		
 		columns[x].removeAll();
-		int length = 6;
-		if(x%2 == 0){length = 5;}
-		
-		for(int i = 0; i < length; i++){
-			columns[x].add(grid[x][i]);
+		if(x%2 == 0){
+			columns[x].add(spacer());
+			for(int i = 0; i < 5; i ++){
+				columns[x].add(grid[x][i]);
+			}
+			columns[x].add(spacer());
 		}
-		columns[x].repaint();
+		else{
+			for(int i = 0; i < 6; i++){
+				columns[x].add(grid[x][i]);
+			}
+		}
+		masterPanel.repaint();
+		frame.setSize(new Dimension(1800,1100));
 	}
 
 	private void makeTileSpace(Color color, Integer x, Integer y){

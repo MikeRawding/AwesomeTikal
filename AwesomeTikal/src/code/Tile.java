@@ -38,25 +38,30 @@ public class Tile {
 			paths[i].setBorder(BorderFactory.createLineBorder(Color.black, 5, false));
 			paths[i].setBackground(Color.gray);
 			paths[i].repaint();
+			paths[i].setVisible(true);
 		}
 		
 		tilePanel.setLayout(new BoxLayout(tilePanel, BoxLayout.Y_AXIS));
 		tilePanel.setSize(250, 180);
 		tilePanel.setMaximumSize(tilePanel.getSize());
 		tilePanel.setMinimumSize(tilePanel.getSize());
+		tilePanel.setVisible(true);
 		top.setLayout(new BorderLayout());
 		top.add(paths[0],BorderLayout.WEST);
 		top.add(paths[1],BorderLayout.NORTH);
 		top.add(paths[2],BorderLayout.EAST);
+		top.setVisible(true);
 		bottom.setLayout(new BorderLayout());
 		bottom.add(paths[3],BorderLayout.EAST);
 		bottom.add(paths[4],BorderLayout.SOUTH);
 		bottom.add(paths[5],BorderLayout.WEST);
+		bottom.setVisible(true);
 		
 		
 		
 		tilePanel.add(top);
 		tilePanel.add(center);
+		center.setVisible(true);
 		tilePanel.add(bottom);
 		
 	}
