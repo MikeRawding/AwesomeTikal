@@ -13,25 +13,6 @@ import javax.swing.JPanel;
 import resources.NoTilesRemainException;
 
 public class GameModel {
-	public static void saveTest(String[] args){
-		ExampleStrings examp = new ExampleStrings();
-		System.out.println(examp.toString());
-	}
-	
-	public static void save(Serializable objectToSerialize){
-		FileOutputStream fos = null;
-		
-		try{
-			fos = new FileOutputStream("SaveState.txt");
-			ObjectOutputStream oos = new ObjectOutputStream(fos);
-			oos.writeObject(objectToSerialize);
-			oos.flush();
-			oos.close();
-		}catch (IOException e){
-			e.printStackTrace();
-		}
-	}
-	
 
 	private static ArrayList<Player> playerList = new ArrayList<Player>();
 	private static int currentPlayer;
