@@ -13,10 +13,9 @@ public class ExampleStrings implements Serializable {
 	
 	public String toString(){
 		StringBuilder out = new StringBuilder();
-		out.append(str1 + "\n");
-		out.append(str2 + "\n");
-		out.append(str3 + "\n");
-		System.out.println(out);
+		out.append(str1+"\n");
+		out.append(str2+"\n");
+		out.append(str3+"\n");
 		return out.toString();
 		
 	}

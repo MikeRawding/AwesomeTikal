@@ -15,7 +15,7 @@ public class SaveTest {
 	public static void save(Serializable objectToSerialize){
 		FileOutputStream fos = null;		
 		try{
-			fos = new FileOutputStream("SaveState.txt");
+			fos = new FileOutputStream("SaveState.sav");
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
 			oos.writeObject(objectToSerialize);
 			oos.flush();
