@@ -17,7 +17,7 @@ public class ReferenceTests {
 	@Test
 	public void addPieceToBoardTest01(){
 		Player player01 = new Player("Mike", Color.YELLOW);
-		Tile tile01 = new Tile();
+		Tile tile01 = new Tile(new int[] {0,0,0,0,0,0});
 		try{
 			tile01.addPieceToBoard(player01, new Piece(player01));
 		}
@@ -32,7 +32,7 @@ public class ReferenceTests {
 	public void ownerTest02(){
 		Player player01 = new Player("Mike", Color.YELLOW);
 		Player player02 = new Player("Tom", Color.BLUE);
-		Temple temple01 = new Temple(1);
+		Temple temple01 = new Temple(new int[] {0,0,0,0,0,0}, 1);
 		temple01.addPiece(player01, new Piece(player01));
 		temple01.addPiece(player01, new Piece(player01));
 		temple01.addPiece(player02, new Piece(player02));
@@ -51,7 +51,7 @@ public class ReferenceTests {
 	public void ownerTest03(){
 		Player player01 = new Player("Mike", Color.YELLOW);
 		Player player02 = new Player("Tom", Color.BLUE);
-		Temple temple01 = new Temple(1);
+		Temple temple01 = new Temple(new int[] {0,0,0,0,0,0}, 1);
 	
 		assertTrue(temple01.isUnoccupied());
 		
@@ -62,7 +62,7 @@ public class ReferenceTests {
 	public void ownerTest04(){
 		Player player01 = new Player("Mike", Color.YELLOW);
 		Player player02 = new Player("Tom", Color.BLUE);
-		Temple tile01 = new Temple(1);
+		Temple tile01 = new Temple(new int[] {0,0,0,0,0,0}, 1);
 		tile01.addPiece(player01, new Piece(player01));
 	
 		assertFalse(tile01.isUnoccupied());
@@ -73,7 +73,7 @@ public class ReferenceTests {
 	public void ownerTest05() throws InvalidMoveException, NoOwnerException, UnoccupiedTileException{
 		Player player01 = new Player("Mike", Color.YELLOW);
 		Player player02 = new Player("Tom", Color.BLUE);
-		Temple tile01 = new Temple(1);
+		Temple tile01 = new Temple(new int[] {0,0,0,0,0,0}, 1);
 		tile01.addPiece(player01, new Piece(player01));
 		tile01.addPiece(player01, new Piece(player01));
 		try {

@@ -15,7 +15,8 @@ public class Temple extends Tile {
 	
 	private int templeValue;
 	
-	public Temple(int startingValue){
+	public Temple(int[] sides, int startingValue){
+		super(sides);
 		templeValue = startingValue;
 	}
 	

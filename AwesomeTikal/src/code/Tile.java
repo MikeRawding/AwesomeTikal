@@ -25,6 +25,7 @@ public class Tile {
 	private JPanel bottom = new JPanel();
 	private JPanel[] paths = new JPanel[6];
 	
+	
 	public Tile(int[] sides){
 		this.sides = sides;
 		initPanel();
