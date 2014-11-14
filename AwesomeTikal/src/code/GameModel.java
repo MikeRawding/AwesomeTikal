@@ -13,9 +13,9 @@ import javax.swing.JPanel;
 import resources.NoTilesRemainException;
 
 public class GameModel {
-	public static void saveTest(String args){
-		Player player = new Player(args, null);
-				save(player);
+	public static void saveTest(String[] args){
+		ExampleStrings examp = new ExampleStrings();
+		System.out.println(examp.toString());
 	}
 	
 	public static void save(Serializable objectToSerialize){

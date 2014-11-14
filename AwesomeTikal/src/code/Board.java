@@ -9,6 +9,7 @@ package code;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.io.Serializable;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -23,7 +24,7 @@ import actionListeners.AddTileListener;
 import actionListeners.EndTurnListener;
 import actionListeners.RotateListener;
 
-public class Board{
+public class Board implements Serializable{
 
 	
 	private JFrame frame; 
