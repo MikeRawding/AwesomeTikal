@@ -1,6 +1,10 @@
 package code;
 
 import java.awt.Color;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -9,6 +13,25 @@ import javax.swing.JPanel;
 import resources.NoTilesRemainException;
 
 public class GameModel {
+	public static void saveTest(String args){
+		Player player = new Player(args, null);
+				save(player);
+	}
+	
+	public static void save(Serializable objectToSerialize){
+		FileOutputStream fos = null;
+		
+		try{
+			fos = new FileOutputStream("SaveState.txt");
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(objectToSerialize);
+			oos.flush();
+			oos.close();
+		}catch (IOException e){
+			e.printStackTrace();
+		}
+	}
+	
 
 	private static ArrayList<Player> playerList = new ArrayList<Player>();
 	private static int currentPlayer;
