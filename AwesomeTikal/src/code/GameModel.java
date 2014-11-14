@@ -80,7 +80,7 @@ public class GameModel {
             actionPoints  = actionPoints-i;
              _currentAP.setText(String.valueOf(actionPoints));
            } else {
-                //_board.close_placement();
+               //message pops up
                JOptionPane.showMessageDialog(null, "Sorry Not Enough Action Points ");
         }
     }
