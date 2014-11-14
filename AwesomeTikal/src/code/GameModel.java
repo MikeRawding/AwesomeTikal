@@ -50,6 +50,22 @@ public class GameModel {
 	}
 	
 	
+	 //changed
+    public static JLabel getCurrentAP(){
+        return _currentAP;
+    }
+
+ //changed
+        public void reduceAP(int i){
+            if (actionPoints >=i) {
+            actionPoints  = actionPoints-i;
+             _currentAP.setText(String.valueOf(actionPoints));
+           } else {
+               //message pops up
+               JOptionPane.showMessageDialog(null, "Sorry Not Enough Action Points ");
+        }
+    }
+	
 	public static Tile nextTile() throws NoTilesRemainException{
 		if(TilesA.size() > 0){
 			Random r = new Random();
