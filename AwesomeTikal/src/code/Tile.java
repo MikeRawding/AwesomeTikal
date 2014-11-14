@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.swing.BorderFactory;
@@ -97,33 +99,49 @@ public class Tile {
 		}
 	}
 		
-	public static void move(Player player,Tile location, Tile destination) throws InvalidMoveException{
+	public static void move(Player player,Tile location, Tile destination) throws InvalidMoveException, NoActionPointsException{
 		//removes a piece from the ArrayList in the HashMap for player in the location tile and adds said Piece to destination
 		destination.addPiece(player, location.removePiece(player));
 	}
 	
-	public void addPiece(Player player, Piece newPiece){
+	private void refreshPiecesPanel(){
+		center.removeAll();
+		Iterator it = pieces.entrySet().iterator();
+		while(it.hasNext()){
+			Map.Entry<Player, ArrayList<Piece>>ent = (Map.Entry)it.next();
+	        if(ent.getValue().size() > 0){
+				JLabel temp = new JLabel(""+ent.getValue().size()+"");
+		        temp.setBackground(ent.getKey().getColor());
+	        }
+		}
+		
+	}
+	
+	public void addPiece(Player player, Piece newPiece) throws NoActionPointsException{
 		//adds piece to HashMap pieces.  If player is not a Key in piece, it is added first
+		
+		if(GameModel.getActionPoints() == 0){
+			throw new NoActionPointsException("You have no Action Points remaining");
+		}
 		
 		if(!(pieces.containsKey(player))){
 			pieces.put(player, new ArrayList<Piece>());
 		}
 		pieces.get(player).add(newPiece);
+		refreshPiecesPanel();
 				
 	}
 	
-	public void addPieceToBoard(Player player, Piece newPiece) throws InvalidMoveException{
+	public void addPieceToBoard(Player player, Piece newPiece) throws InvalidMoveException, NoActionPointsException{
 		//similar to addPiece method, but decrements piecesRemaining in player
 		
 		if(player.getPiecesRemaing() == 0){
 			throw new InvalidMoveException("You have already exhausted your supply of explorers");
 		}
-		
-		if(!(pieces.containsKey(player))){
-			pieces.put(player, new ArrayList<Piece>());
-		}
-		pieces.get(player).add(newPiece);
 		player.setPiecesRemaining(player.getPiecesRemaing()-1);
+		
+		addPiece(player, newPiece);
+		
 		
 				
 	}
@@ -135,7 +153,9 @@ public class Tile {
 			throw new InvalidMoveException("That player does not have any pieces on this tile");
 		}
 		
-		return pieces.get(player).remove(0);
+		Piece temp = pieces.get(player).remove(0);
+		refreshPiecesPanel();
+		return temp;
 		
 	
 	}
@@ -156,11 +176,7 @@ public class Tile {
 		}
 		return true;	
 	}
-	
-	//Define JPanel for tile
-	
-	
-	
-	
+		
+		
 	
 }
