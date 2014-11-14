@@ -93,6 +93,8 @@ public class Board{
 			rotateOnDeckCloclwise.setMaximumSize(rotateOnDeckCloclwise.getSize());
 			rotateOnDeckCloclwise.addActionListener(new RotateListener(this, true));
 			menuPanel.add(rotateOnDeckCloclwise);
+			
+			//Pieces remaining label
 
 		masterPanel.add(menuPanel);
 		
@@ -158,15 +160,16 @@ public class Board{
 	private void makeTileSpace(Color color, Integer x, Integer y){
 		grid[x][y] = new JPanel(); //creates new button 
 		grid[x][y].setBackground(color);
-		grid[x][y].repaint();
 		grid[x][y].setBorder(BorderFactory.createLineBorder(Color.black, 5, false));
+		grid[x][y].addMouseListener(new AddTileListener(this,x,y));
+		
 		grid[x][y].setSize(new Dimension(250,180));
 		grid[x][y].setMaximumSize(grid[x][y].getSize());
 		grid[x][y].setMinimumSize(grid[x][y].getSize());
 		
-		JButton temp = new JButton("Place Tile");
-		temp.addActionListener(new AddTileListener(this,x,y));
-		grid[x][y].add(temp);
+//		JButton temp = new JButton("Place Tile");
+//		temp.addActionListener(new AddTileListener(this,x,y));
+//		grid[x][y].add(temp);
 		
 		columns[x].add(grid[x][y]); //adds button to grid
 		

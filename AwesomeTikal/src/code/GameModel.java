@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.swing.JPanel;
+
 import resources.NoTilesRemainException;
 
 public class GameModel {
@@ -12,6 +14,8 @@ public class GameModel {
 	private static int currentPlayer;
 	private static int actionPoints = 10;
 	public static Tile onDeckTile;
+	public static JPanel selectedTile;
+	
 	
 	public static Player getPlayer(){
 		return playerList.get(currentPlayer);
