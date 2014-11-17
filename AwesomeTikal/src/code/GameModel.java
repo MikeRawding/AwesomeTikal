@@ -8,6 +8,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import resources.NoTilesRemainException;
@@ -17,6 +19,7 @@ public class GameModel {
 	private static ArrayList<Player> playerList = new ArrayList<Player>();
 	private static int currentPlayer;
 	private static int actionPoints = 10;
+	private static JLabel _currentAP;
 	public static Tile onDeckTile;
 	public static JPanel selectedTile;
 	
