@@ -23,6 +23,7 @@ import resources.NoTilesRemainException;
 import actionListeners.AddTileListener;
 import actionListeners.EndTurnListener;
 import actionListeners.RotateListener;
+import actionListeners.SelectTileListener;
 
 public class Board implements Serializable{
 
@@ -34,6 +35,8 @@ public class Board implements Serializable{
 	private JPanel[] columns; //6 vertical columns to assist in a grid layout
 	private Tile[][] grid; //Each space for a tile is stored here
 	private JPanel onDeckPreview;
+	private int selectedX = 0;
+	private int selectedY = 0;
 	
 	
 	//The only constructor of this class.  GUI is displayed when constructed.
@@ -60,8 +63,6 @@ public class Board implements Serializable{
 		grid = new Tile[6][6];
 		populateColumns(boardPanel);
 		
-		
-		//Get onDeckTile
 		
 		
 		//Make and add menu bar
@@ -160,7 +161,7 @@ public class Board implements Serializable{
 
 	private void makeTileSpace(Integer x, Integer y){
 		grid[x][y] = new Tile(); //creates new button 
-		grid[x][y].getTilePanel().addMouseListener(new AddTileListener(this,x,y));
+		grid[x][y].getTilePanel().addMouseListener(new SelectTileListener(this,x,y));
 		columns[x].add(grid[x][y].getTilePanel()); //adds Tile to grid
 		
 	}
@@ -169,6 +170,21 @@ public class Board implements Serializable{
 		onDeckPreview = GameModel.onDeckTile.getTilePanel();
 		menuPanel.add(onDeckPreview);
 		frame.setSize(new Dimension(1800,1100));
+	}
+	
+	public void setSelectedX(int x){
+		selectedX = x;
+	}
+	
+	public void setSelectedY(int y){
+		selectedY = y;
+	}
+
+	public void setSelected(int x, int y) {
+		grid[selectedX][selectedY].getTilePanel().setBorder(BorderFactory.createLineBorder(Color.black, 5, false));
+		selectedX = x;
+		selectedY = y;
+		grid[selectedX][selectedY].getTilePanel().setBorder(BorderFactory.createLineBorder(Color.green, 5, false));
 	}
 
 }
