@@ -5,6 +5,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.JOptionPane;
+
+import resources.NoTilesRemainException;
 import code.Board;
 import code.GameModel;
 
@@ -20,6 +23,12 @@ public class AddTileListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		_board.placeTile(GameModel.onDeckTile);
+		try {
+			GameModel.nextTile();
+		} catch (NoTilesRemainException e1) {
+			JOptionPane.showMessageDialog(null, "No tiles remaining");
+		}
+		_board.refreshMenuPanel();
 
 	}
 

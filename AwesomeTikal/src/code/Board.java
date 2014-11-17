@@ -36,12 +36,9 @@ public class Board implements Serializable{
 	private JPanel menuPanel; //panel for menu bar
 	private JPanel[] columns; //6 vertical columns to assist in a grid layout
 	private Tile[][] grid; //Each space for a tile is stored here
-	private JPanel onDeckPreview;
 	private int selectedX = 0;
 	private int selectedY = 0;
-	private boolean tilePlaced = false;
 	private boolean placingStarters = true;
-	
 	
 	//The only constructor of this class.  GUI is displayed when constructed.
 	public Board(){
@@ -72,63 +69,69 @@ public class Board implements Serializable{
 		placeTile(new Tile(new int[]{0,1,1,2,0,0}));
 		grid[selectedX][selectedY].setPiecesPlaceable(true);
 		selectedX = 1;
-		tilePlaced = false;
 		placeTile(new Tile(new int[]{0,0,0,2,1,0}));
 		selectedX = 0;
 		selectedY = 1;
-		tilePlaced = false;
 		placeTile(new Tile(new int[]{0,1,1,2,1,0}));
-		tilePlaced = false;
 		placingStarters = false;
 		
 		//Make and add menu bar
 		menuPanel = new JPanel();
 		menuPanel.setLayout(new BoxLayout(menuPanel,1));
-		menuPanel.setBackground(GameModel.getPlayer().getColor());
 		menuPanel.setSize(300, 900);
 		menuPanel.setMaximumSize(menuPanel.getSize());
 		
-			//endTurn button
-			JButton endTurn = new JButton("End Turn");
-			endTurn.setSize(300, 100);
-			endTurn.setMaximumSize(endTurn.getSize());
-			endTurn.setMinimumSize(endTurn.getSize());
-			endTurn.addActionListener(new EndTurnListener(this,menuPanel));
-			menuPanel.add(endTurn);
 		
-			//AP counter
-			JLabel aP = new JLabel(""+GameModel.getActionPoints()+"");
-			menuPanel.add(aP);
-			
-			//new tile preview
-			onDeckPreview = GameModel.onDeckTile.getTilePanel();
-			menuPanel.add(onDeckPreview);
-			
-			//rotate buttonOnDeck
-			JButton rotateOnDeckCloclwise = new JButton("Rotate");
-			rotateOnDeckCloclwise.setSize(100,100);
-			rotateOnDeckCloclwise.setMaximumSize(rotateOnDeckCloclwise.getSize());
-			rotateOnDeckCloclwise.setMaximumSize(rotateOnDeckCloclwise.getSize());
-			rotateOnDeckCloclwise.addActionListener(new RotateListener(this, true));
-			menuPanel.add(rotateOnDeckCloclwise);
-			
-			//place Tile button
-			JButton placeTile = new JButton("Place Tile");
-			placeTile.setSize(100,100);
-			placeTile.setMaximumSize(placeTile.getSize());
-			placeTile.setMaximumSize(placeTile.getSize());
-			placeTile.addActionListener(new AddTileListener(this));
-			menuPanel.add(placeTile);
-
-			//add piece to board button
-			JButton addPieceToBoard = new JButton("Add piece to selected tile");
-			addPieceToBoard.addActionListener(new AddPieceListener(this));
-			menuPanel.add(addPieceToBoard);
+		refreshMenuPanel();
 			
 		masterPanel.add(menuPanel);
 		
 		
 		
+	}
+
+	public void refreshMenuPanel() {
+		menuPanel.removeAll();
+		
+		menuPanel.setBackground(GameModel.getPlayer().getColor());
+
+		//endTurn button
+		JButton endTurn = new JButton("End Turn");
+		endTurn.setSize(300, 100);
+		endTurn.setMaximumSize(endTurn.getSize());
+		endTurn.setMinimumSize(endTurn.getSize());
+		endTurn.addActionListener(new EndTurnListener(this,menuPanel));
+		menuPanel.add(endTurn);
+
+		//AP counter
+		JLabel aP = new JLabel("Action Points Remaining: "+GameModel.getActionPoints()+"");
+		menuPanel.add(aP);
+		
+		//new tile preview
+		JPanel onDeckPreview = GameModel.onDeckTile.getTilePanel();
+		menuPanel.add(onDeckPreview);
+		
+		//rotate buttonOnDeck
+		JButton rotateOnDeckCloclwise = new JButton("Rotate");
+		rotateOnDeckCloclwise.setSize(100,100);
+		rotateOnDeckCloclwise.setMaximumSize(rotateOnDeckCloclwise.getSize());
+		rotateOnDeckCloclwise.setMaximumSize(rotateOnDeckCloclwise.getSize());
+		rotateOnDeckCloclwise.addActionListener(new RotateListener(this, true));
+		menuPanel.add(rotateOnDeckCloclwise);
+		
+		//place Tile button
+		JButton placeTile = new JButton("Place Tile");
+		placeTile.setSize(100,100);
+		placeTile.setMaximumSize(placeTile.getSize());
+		placeTile.setMaximumSize(placeTile.getSize());
+		placeTile.addActionListener(new AddTileListener(this));
+		menuPanel.add(placeTile);
+
+		//add piece to board button
+		JButton addPieceToBoard = new JButton("Add piece to selected tile");
+		addPieceToBoard.addActionListener(new AddPieceListener(this));
+		menuPanel.add(addPieceToBoard);
+		frame.setSize(new Dimension(1800,1100));
 	}
 	
 	//Spacer used to create stagger between columns
@@ -167,21 +170,21 @@ public class Board implements Serializable{
 	
 	//Incomplete method for adding Panels form Tile class to Board
 	public void placeTile(Tile t){
-		if(!tilePlaced){
-			if(!grid[selectedX][selectedY].isBlank()){
-				JOptionPane.showMessageDialog(null, "That position is already occupied.");
-				return;
-			}
-			if(tilePlaceable(selectedX, selectedY) || placingStarters){
-				grid[selectedX][selectedY]= t;
-				grid[selectedX][selectedY].getTilePanel().addMouseListener(new SelectTileListener(this,selectedX,selectedY));
-				tilePlaced = true;
-				refreshColumn(selectedX);
-			}
-			else{
-				JOptionPane.showMessageDialog(null, "You must place the new tile next to an existing tile.");
-			}
-		}	
+		
+		if(!grid[selectedX][selectedY].isBlank()){
+			JOptionPane.showMessageDialog(null, "That position is already occupied.");
+			return;
+		}
+		if(tilePlaceable(selectedX, selectedY) || placingStarters){
+			grid[selectedX][selectedY]= t;
+			grid[selectedX][selectedY].getTilePanel().addMouseListener(new SelectTileListener(this,selectedX,selectedY));
+			
+			refreshColumn(selectedX);
+		}
+		else{
+			JOptionPane.showMessageDialog(null, "You must place the new tile next to an existing tile.");
+		}
+			
 	}
 
 	private void refreshColumn(int x) {
@@ -210,7 +213,7 @@ public class Board implements Serializable{
 	}
 	
 	public void refreshOnDeckPreview(){
-		onDeckPreview = GameModel.onDeckTile.getTilePanel();
+		JPanel onDeckPreview = GameModel.onDeckTile.getTilePanel();
 		menuPanel.add(onDeckPreview);
 		frame.setSize(new Dimension(1800,1100));
 	}
@@ -230,9 +233,7 @@ public class Board implements Serializable{
 		grid[selectedX][selectedY].getTilePanel().setBorder(BorderFactory.createLineBorder(Color.green, 5, false));
 	}
 	
-	public void setTilePlaced(boolean b){
-		tilePlaced = b;
-	}
+	
 	
 	private boolean tilePlaceable(int x, int y){
 		

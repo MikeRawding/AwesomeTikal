@@ -6,8 +6,11 @@ import code.Piece;
 
 import java.awt.event.ActionListener;
 
+import javax.swing.JOptionPane;
+
 import resources.InvalidMoveException;
 import resources.NoActionPointsException;
+import resources.NoTilesRemainException;
 import code.Board;
 import code.GameModel;
 
@@ -24,7 +27,12 @@ public class AddPieceListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		b.getSelectedTile().addPieceToBoard(GameModel.getPlayer(), new Piece(GameModel.getPlayer()));
-		b.refreshOnDeckPreview();
+		try {
+			GameModel.nextTile();
+		} catch (NoTilesRemainException e1) {
+			JOptionPane.showMessageDialog(null, "No Tiles Remaining");
+		}
+		b.refreshMenuPanel();
 	}
 
 }
