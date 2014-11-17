@@ -160,30 +160,38 @@ public class Board implements Serializable{
 	//Incomplete method for adding Panels form Tile class to Board
 	public void placeTile(Tile t){
 		if(!tilePlaced){
+			if(!grid[selectedX][selectedY].isBlank()){
+				JOptionPane.showMessageDialog(null, "That position is already occupied.");
+				return;
+			}
 			if(tilePlaceable(selectedX, selectedY) || placingStarters){
-				int x = selectedX;
 				grid[selectedX][selectedY]= t;
+				grid[selectedX][selectedY].getTilePanel().addMouseListener(new SelectTileListener(this,selectedX,selectedY));
 				tilePlaced = true;
-				columns[x].removeAll();
-				if(x%2 == 0){
-					columns[x].add(spacer());
-					for(int i = 0; i < 5; i ++){
-						columns[x].add(grid[x][i].getTilePanel());
-					}
-					columns[x].add(spacer());
-				}
-				else{
-					for(int i = 0; i < 6; i++){
-						columns[x].add(grid[x][i].getTilePanel());
-					}
-				}
-				masterPanel.repaint();
-				frame.setSize(new Dimension(1800,1100));
+				refreshColumn(selectedX);
 			}
 			else{
 				JOptionPane.showMessageDialog(null, "You must place the new tile next to an existing tile.");
 			}
 		}	
+	}
+
+	private void refreshColumn(int x) {
+		columns[x].removeAll();
+		if(x%2 == 0){
+			columns[x].add(spacer());
+			for(int i = 0; i < 5; i ++){
+				columns[x].add(grid[x][i].getTilePanel());
+			}
+			columns[x].add(spacer());
+		}
+		else{
+			for(int i = 0; i < 6; i++){
+				columns[x].add(grid[x][i].getTilePanel());
+			}
+		}
+		masterPanel.repaint();
+		frame.setSize(new Dimension(1800,1100));
 	}
 
 	private void makeTileSpace(Integer x, Integer y){

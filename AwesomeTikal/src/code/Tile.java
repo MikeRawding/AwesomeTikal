@@ -52,6 +52,7 @@ public class Tile {
 	}
 	
 	private void initPanel(){
+		tilePanel.setBorder(BorderFactory.createLineBorder(Color.black, 5, false));
 		for(int i = 0; i < paths.length; i++){
 			paths[i] = new JPanel();
 			paths[i].setBorder(BorderFactory.createLineBorder(Color.black, 5, false));
@@ -59,7 +60,6 @@ public class Tile {
 			paths[i].add(new JLabel(""+sides[i]+""));
 			paths[i].setVisible(true);
 		}
-		
 		tilePanel.setLayout(new BoxLayout(tilePanel, BoxLayout.Y_AXIS));
 		tilePanel.setSize(250, 180);
 		tilePanel.setMaximumSize(tilePanel.getSize());
@@ -75,14 +75,10 @@ public class Tile {
 		bottom.add(paths[4],BorderLayout.SOUTH);
 		bottom.add(paths[5],BorderLayout.WEST);
 		bottom.setVisible(true);
-		
-		
-		
 		tilePanel.add(top);
 		tilePanel.add(center);
 		center.setVisible(true);
 		tilePanel.add(bottom);
-		
 	}
 	
 	
