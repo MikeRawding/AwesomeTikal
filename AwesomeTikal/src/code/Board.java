@@ -64,6 +64,8 @@ public class Board implements Serializable{
 		populateColumns(boardPanel);
 		
 		
+		//sets starting tile
+		
 		
 		//Make and add menu bar
 		menuPanel = new JPanel();
@@ -96,7 +98,12 @@ public class Board implements Serializable{
 			rotateOnDeckCloclwise.addActionListener(new RotateListener(this, true));
 			menuPanel.add(rotateOnDeckCloclwise);
 			
-			//Pieces remaining label
+			JButton placeTile = new JButton("Place Tile");
+			placeTile.setSize(100,100);
+			placeTile.setMaximumSize(placeTile.getSize());
+			placeTile.setMaximumSize(placeTile.getSize());
+			placeTile.addActionListener(new AddTileListener(this));
+			menuPanel.add(placeTile);
 
 		masterPanel.add(menuPanel);
 		
@@ -139,9 +146,9 @@ public class Board implements Serializable{
 	
 	
 	//Incomplete method for adding Panels form Tile class to Board
-	public void addTile(int x, int y){
-		
-		grid[x][y]= GameModel.onDeckTile;
+	public void placeTile(){
+		int x = selectedX;
+		grid[selectedX][selectedY]= GameModel.onDeckTile;
 		columns[x].removeAll();
 		if(x%2 == 0){
 			columns[x].add(spacer());
