@@ -113,6 +113,8 @@ public class Tile {
 		
 	public static void move(Player player,Tile location, Tile destination) throws InvalidMoveException, NoActionPointsException{
 		//removes a piece from the ArrayList in the HashMap for player in the location tile and adds said Piece to destination
+		
+		
 		destination.addPiece(player, location.removePiece(player));
 	}
 	
@@ -209,5 +211,9 @@ public class Tile {
 	
 	public void setPiecesPlaceable(boolean b){
 		piecesPlaceable = b;
+	}
+	
+	public int[] getSides(){
+		return sides;
 	}
 }

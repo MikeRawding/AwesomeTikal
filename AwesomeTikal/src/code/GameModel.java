@@ -114,6 +114,8 @@ public class GameModel {
 		GameModel.TilesA.add(new Tile(new int[] {3,3,3,3,4,5}));
 		GameModel.TilesA.add(new Tile(new int[] {0,1,2,3,4,5}));
 		GameModel.TilesA.add(new Tile(new int[] {0,1,2,3,4,5}));
+		GameModel.TilesA.add(new Tile(new int[] {0,1,2,3,4,5}));
+		GameModel.TilesA.add(new Tile(new int[] {0,1,2,3,4,5}));
 		
 		try {
 			GameModel.nextTile();

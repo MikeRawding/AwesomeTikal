@@ -24,8 +24,10 @@ import actionListeners.AddPieceListener;
 import resources.NoTilesRemainException;
 import actionListeners.AddTileListener;
 import actionListeners.EndTurnListener;
+import actionListeners.MovePieceListener;
 import actionListeners.RotateListener;
 import actionListeners.SelectTileListener;
+import actionListeners.SetTwoSelectionsListener;
 
 public class Board implements Serializable{
 
@@ -38,6 +40,9 @@ public class Board implements Serializable{
 	private Tile[][] grid; //Each space for a tile is stored here
 	private int selectedX = 0;
 	private int selectedY = 0;
+	private int prevSelectedX = 0;
+	private int prevSelectedY = 0;
+	private boolean twoSelections = false;
 	private boolean placingStarters = true;
 	
 	//The only constructor of this class.  GUI is displayed when constructed.
@@ -66,7 +71,7 @@ public class Board implements Serializable{
 		
 		
 		//sets starting tile
-		placeTile(new Tile(new int[]{0,1,1,2,0,0}));
+		placeTile(new Tile(new int[]{0,1,2,3,4,5}));
 		grid[selectedX][selectedY].setPiecesPlaceable(true);
 		selectedX = 1;
 		placeTile(new Tile(new int[]{0,0,0,2,1,0}));
@@ -131,6 +136,18 @@ public class Board implements Serializable{
 		JButton addPieceToBoard = new JButton("Add piece to selected tile");
 		addPieceToBoard.addActionListener(new AddPieceListener(this));
 		menuPanel.add(addPieceToBoard);
+		
+		
+		//move piece button
+		JButton enableTwoSelections = new JButton("Select two Tiles for Move");
+		enableTwoSelections.addActionListener(new SetTwoSelectionsListener(this));
+		menuPanel.add(enableTwoSelections);
+		
+		JButton move = new JButton("Move");
+		move.addActionListener(new MovePieceListener(this));
+		menuPanel.add(move);
+		
+		
 		frame.setSize(new Dimension(1800,1100));
 	}
 	
@@ -233,7 +250,16 @@ public class Board implements Serializable{
 	}
 
 	public void setSelected(int x, int y) {
-		grid[selectedX][selectedY].getTilePanel().setBorder(BorderFactory.createLineBorder(Color.black, 5, false));
+		if(twoSelections){
+			grid[prevSelectedX][prevSelectedY].getTilePanel().setBorder(BorderFactory.createLineBorder(Color.black, 5, false));
+			prevSelectedX = selectedX;
+			prevSelectedY = selectedY;
+			grid[prevSelectedX][prevSelectedY].getTilePanel().setBorder(BorderFactory.createLineBorder(Color.blue, 5, false));
+		}
+		if(!twoSelections){
+			grid[selectedX][selectedY].getTilePanel().setBorder(BorderFactory.createLineBorder(Color.black, 5, false));
+			grid[prevSelectedX][prevSelectedY].getTilePanel().setBorder(BorderFactory.createLineBorder(Color.black, 5, false));
+		}
 		selectedX = x;
 		selectedY = y;
 		grid[selectedX][selectedY].getTilePanel().setBorder(BorderFactory.createLineBorder(Color.green, 5, false));
@@ -326,4 +352,20 @@ public class Board implements Serializable{
 		return grid[selectedX][selectedY];
 	}
 
+	public void setTwoSelections(boolean b){
+		twoSelections = b;
+	}
+	
+	public int calculatePath(int x1, int y1, int x2, int y2){
+		int locationValue = 0 ;
+		int destinationValue = 0;
+		if(x1 == x2){
+			if(y1 < y2){
+				locationValue = grid[x1][y1].getSides()[4];
+				destinationValue = grid[x2][y2].getSides()[1];
+			}
+		}
+		
+		return locationValue + destinationValue;
+	}
 }
