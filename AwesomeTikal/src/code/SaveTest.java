@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 public class SaveTest {
 	public static void main(String[] args){
-		ExampleStrings examp = new ExampleStrings();
+		GameModel examp = new GameModel();
 		System.out.println(examp.toString());
 		save(examp);
 	}

@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 
 import resources.NoTilesRemainException;
 
-public class GameModel {
+public class GameModel implements Serializable {
 
 	private static ArrayList<Player> playerList = new ArrayList<Player>();
 	private static int currentPlayer = 0;
