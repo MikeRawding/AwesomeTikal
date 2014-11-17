@@ -24,6 +24,7 @@ public class EndTurnListener implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		panel.setBackground(GameModel.nextPlayer().getColor());
+		b.setTilePlaced(false);
 		try {
 			GameModel.nextTile();
 		} catch (NoTilesRemainException e1) {

@@ -37,6 +37,7 @@ public class Board implements Serializable{
 	private JPanel onDeckPreview;
 	private int selectedX = 0;
 	private int selectedY = 0;
+	private boolean tilePlaced = false;
 	
 	
 	//The only constructor of this class.  GUI is displayed when constructed.
@@ -65,7 +66,15 @@ public class Board implements Serializable{
 		
 		
 		//sets starting tile
-		
+		placeTile(new Tile(new int[]{0,1,1,2,0,0}));
+		selectedX = 1;
+		tilePlaced = false;
+		placeTile(new Tile(new int[]{0,0,0,2,1,0}));
+		selectedX = 0;
+		selectedY = 1;
+		tilePlaced = false;
+		placeTile(new Tile(new int[]{0,1,1,2,1,0}));
+		tilePlaced = false;
 		
 		//Make and add menu bar
 		menuPanel = new JPanel();
@@ -146,24 +155,27 @@ public class Board implements Serializable{
 	
 	
 	//Incomplete method for adding Panels form Tile class to Board
-	public void placeTile(){
-		int x = selectedX;
-		grid[selectedX][selectedY]= GameModel.onDeckTile;
-		columns[x].removeAll();
-		if(x%2 == 0){
-			columns[x].add(spacer());
-			for(int i = 0; i < 5; i ++){
-				columns[x].add(grid[x][i].getTilePanel());
+	public void placeTile(Tile t){
+		if(!tilePlaced){
+			int x = selectedX;
+			grid[selectedX][selectedY]= t;
+			tilePlaced = true;
+			columns[x].removeAll();
+			if(x%2 == 0){
+				columns[x].add(spacer());
+				for(int i = 0; i < 5; i ++){
+					columns[x].add(grid[x][i].getTilePanel());
+				}
+				columns[x].add(spacer());
 			}
-			columns[x].add(spacer());
-		}
-		else{
-			for(int i = 0; i < 6; i++){
-				columns[x].add(grid[x][i].getTilePanel());
+			else{
+				for(int i = 0; i < 6; i++){
+					columns[x].add(grid[x][i].getTilePanel());
+				}
 			}
+			masterPanel.repaint();
+			frame.setSize(new Dimension(1800,1100));
 		}
-		masterPanel.repaint();
-		frame.setSize(new Dimension(1800,1100));
 	}
 
 	private void makeTileSpace(Integer x, Integer y){
@@ -192,6 +204,10 @@ public class Board implements Serializable{
 		selectedX = x;
 		selectedY = y;
 		grid[selectedX][selectedY].getTilePanel().setBorder(BorderFactory.createLineBorder(Color.green, 5, false));
+	}
+	
+	public void setTilePlaced(boolean b){
+		tilePlaced = b;
 	}
 
 }

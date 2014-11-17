@@ -19,7 +19,7 @@ public class AddTileListener implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		_board.placeTile();
+		_board.placeTile(GameModel.onDeckTile);
 
 	}
 
