@@ -20,6 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import actionListeners.AddPieceListener;
 import resources.NoTilesRemainException;
 import actionListeners.AddTileListener;
 import actionListeners.EndTurnListener;
@@ -69,6 +70,7 @@ public class Board implements Serializable{
 		
 		//sets starting tile
 		placeTile(new Tile(new int[]{0,1,1,2,0,0}));
+		grid[selectedX][selectedY].setPiecesPlaceable(true);
 		selectedX = 1;
 		tilePlaced = false;
 		placeTile(new Tile(new int[]{0,0,0,2,1,0}));
@@ -82,7 +84,7 @@ public class Board implements Serializable{
 		//Make and add menu bar
 		menuPanel = new JPanel();
 		menuPanel.setLayout(new BoxLayout(menuPanel,1));
-		menuPanel.setBackground(Color.blue);
+		menuPanel.setBackground(GameModel.getPlayer().getColor());
 		menuPanel.setSize(300, 900);
 		menuPanel.setMaximumSize(menuPanel.getSize());
 		
@@ -110,6 +112,7 @@ public class Board implements Serializable{
 			rotateOnDeckCloclwise.addActionListener(new RotateListener(this, true));
 			menuPanel.add(rotateOnDeckCloclwise);
 			
+			//place Tile button
 			JButton placeTile = new JButton("Place Tile");
 			placeTile.setSize(100,100);
 			placeTile.setMaximumSize(placeTile.getSize());
@@ -117,6 +120,11 @@ public class Board implements Serializable{
 			placeTile.addActionListener(new AddTileListener(this));
 			menuPanel.add(placeTile);
 
+			//add piece to board button
+			JButton addPieceToBoard = new JButton("Add piece to selected tile");
+			addPieceToBoard.addActionListener(new AddPieceListener(this));
+			menuPanel.add(addPieceToBoard);
+			
 		masterPanel.add(menuPanel);
 		
 		
@@ -301,6 +309,14 @@ public class Board implements Serializable{
 
 	private boolean isInGrid(int x, int y){
 		return(x>=0 && x<grid.length && y>=0 && y<grid[0].length);
+	}
+	
+	public Tile[][] getGrid(){
+		return grid;
+	}
+	
+	public Tile getSelectedTile(){
+		return grid[selectedX][selectedY];
 	}
 
 }

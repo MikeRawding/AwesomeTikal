@@ -17,7 +17,7 @@ import resources.NoTilesRemainException;
 public class GameModel {
 
 	private static ArrayList<Player> playerList = new ArrayList<Player>();
-	private static int currentPlayer;
+	private static int currentPlayer = 0;
 	private static int actionPoints = 10;
 	private static JLabel _currentAP;
 	public static Tile onDeckTile;
@@ -41,6 +41,10 @@ public class GameModel {
 	
 	public static int getActionPoints(){
 		return actionPoints;
+	}
+	
+	public static void setActionPoints(int in){
+		actionPoints = in;
 	}
 	
 	
@@ -118,14 +122,18 @@ public class GameModel {
 			e.printStackTrace();
 		}
 		
-		new Board();
-				
 		//Establish players
-		Player p1 = new Player("Tom", Color.GREEN);
+		Player p1 = new Player("Tom", Color.cyan);
 		Player p2 = new Player("Mike", Color.ORANGE);
 		GameModel.getPlayerList().add(p1);
 		GameModel.getPlayerList().add(p2);
 		
+		
+		
+		
+		new Board();
+				
+
 		
 		
 		

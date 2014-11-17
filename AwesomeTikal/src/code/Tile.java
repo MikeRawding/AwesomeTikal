@@ -12,6 +12,7 @@ import java.util.Map.Entry;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import resources.*;
@@ -28,6 +29,7 @@ public class Tile {
 	private JPanel bottom = new JPanel();
 	private JPanel[] paths = new JPanel[6];
 	private boolean isBlank;
+	private boolean piecesPlaceable = false;
 	
 	
 	//constructor for making blank tiles to populate the board
@@ -121,17 +123,20 @@ public class Tile {
 			Map.Entry<Player, ArrayList<Piece>>ent = (Map.Entry)it.next();
 	        if(ent.getValue().size() > 0){
 				JLabel temp = new JLabel(""+ent.getValue().size()+"");
-		        temp.setBackground(ent.getKey().getColor());
+				temp.setBackground(ent.getKey().getColor());
+				temp.setOpaque(true);
+		        center.add(temp);
 	        }
 		}
 		
 	}
 	
-	public void addPiece(Player player, Piece newPiece) throws NoActionPointsException{
+	public void addPiece(Player player, Piece newPiece){
 		//adds piece to HashMap pieces.  If player is not a Key in piece, it is added first
 		
 		if(GameModel.getActionPoints() == 0){
-			throw new NoActionPointsException("You have no Action Points remaining");
+			JOptionPane.showMessageDialog(null, "You have no action points remaining");
+			return;
 		}
 		
 		if(!(pieces.containsKey(player))){
@@ -139,19 +144,26 @@ public class Tile {
 		}
 		pieces.get(player).add(newPiece);
 		refreshPiecesPanel();
+		GameModel.setActionPoints(GameModel.getActionPoints()-1);
 				
 	}
 	
-	public void addPieceToBoard(Player player, Piece newPiece) throws InvalidMoveException, NoActionPointsException{
+	public void addPieceToBoard(Player player, Piece newPiece){
 		//similar to addPiece method, but decrements piecesRemaining in player
 		
 		if(player.getPiecesRemaing() == 0){
-			throw new InvalidMoveException("You have already exhausted your supply of explorers");
+			JOptionPane.showMessageDialog(null, "You have no exploreres remaining");
 		}
-		player.setPiecesRemaining(player.getPiecesRemaing()-1);
-		
-		addPiece(player, newPiece);
-		
+		else if(!piecesPlaceable){
+			JOptionPane.showMessageDialog(null, "You can only add pieces to the starting tile");
+		}
+		else if(GameModel.getActionPoints() == 0){
+			JOptionPane.showMessageDialog(null, "You have no action points remaining");
+		}
+		else{
+			player.setPiecesRemaining(player.getPiecesRemaing()-1);
+			addPiece(player, newPiece);
+		}
 		
 				
 	}
@@ -191,4 +203,11 @@ public class Tile {
 		return isBlank;
 	}
 	
+	public boolean piecesPlaceable(){
+		return piecesPlaceable;
+	}
+	
+	public void setPiecesPlaceable(boolean b){
+		piecesPlaceable = b;
+	}
 }
