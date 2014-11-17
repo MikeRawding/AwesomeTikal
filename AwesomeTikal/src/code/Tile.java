@@ -27,6 +27,7 @@ public class Tile {
 	private JPanel center = new JPanel();
 	private JPanel bottom = new JPanel();
 	private JPanel[] paths = new JPanel[6];
+	private boolean isBlank;
 	
 	
 	//constructor for making blank tiles to populate the board
@@ -36,12 +37,14 @@ public class Tile {
 		tilePanel.setSize(new Dimension(250,180));
 		tilePanel.setMaximumSize(tilePanel.getSize());
 		tilePanel.setMinimumSize(tilePanel.getSize());
+		isBlank = true;
 	}
 	
 	//constructor for making tiles in the deck
 	public Tile(int[] sides){
 		this.sides = sides;
 		initPanel();
+		isBlank = false;
 	}
 	
 	public JPanel getTilePanel(){
@@ -188,6 +191,8 @@ public class Tile {
 		return true;	
 	}
 		
-		
+	public boolean isBlank(){
+		return isBlank;
+	}
 	
 }

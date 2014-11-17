@@ -17,6 +17,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import resources.NoTilesRemainException;
@@ -38,6 +39,7 @@ public class Board implements Serializable{
 	private int selectedX = 0;
 	private int selectedY = 0;
 	private boolean tilePlaced = false;
+	private boolean placingStarters = true;
 	
 	
 	//The only constructor of this class.  GUI is displayed when constructed.
@@ -75,6 +77,7 @@ public class Board implements Serializable{
 		tilePlaced = false;
 		placeTile(new Tile(new int[]{0,1,1,2,1,0}));
 		tilePlaced = false;
+		placingStarters = false;
 		
 		//Make and add menu bar
 		menuPanel = new JPanel();
@@ -157,25 +160,30 @@ public class Board implements Serializable{
 	//Incomplete method for adding Panels form Tile class to Board
 	public void placeTile(Tile t){
 		if(!tilePlaced){
-			int x = selectedX;
-			grid[selectedX][selectedY]= t;
-			tilePlaced = true;
-			columns[x].removeAll();
-			if(x%2 == 0){
-				columns[x].add(spacer());
-				for(int i = 0; i < 5; i ++){
-					columns[x].add(grid[x][i].getTilePanel());
+			if(tilePlaceable(selectedX, selectedY) || placingStarters){
+				int x = selectedX;
+				grid[selectedX][selectedY]= t;
+				tilePlaced = true;
+				columns[x].removeAll();
+				if(x%2 == 0){
+					columns[x].add(spacer());
+					for(int i = 0; i < 5; i ++){
+						columns[x].add(grid[x][i].getTilePanel());
+					}
+					columns[x].add(spacer());
 				}
-				columns[x].add(spacer());
+				else{
+					for(int i = 0; i < 6; i++){
+						columns[x].add(grid[x][i].getTilePanel());
+					}
+				}
+				masterPanel.repaint();
+				frame.setSize(new Dimension(1800,1100));
 			}
 			else{
-				for(int i = 0; i < 6; i++){
-					columns[x].add(grid[x][i].getTilePanel());
-				}
+				JOptionPane.showMessageDialog(null, "You must place the new tile next to an existing tile.");
 			}
-			masterPanel.repaint();
-			frame.setSize(new Dimension(1800,1100));
-		}
+		}	
 	}
 
 	private void makeTileSpace(Integer x, Integer y){
@@ -208,6 +216,83 @@ public class Board implements Serializable{
 	
 	public void setTilePlaced(boolean b){
 		tilePlaced = b;
+	}
+	
+	private boolean tilePlaceable(int x, int y){
+		
+		if(x%2==0){
+			if(isInGrid(x,y-1)){
+				if(!grid[x][y-1].isBlank()){
+					return true;
+				}
+			}
+			if(isInGrid(x+1,y)){
+				if(!grid[x+1][y].isBlank()){
+					return true;
+				}
+			}
+			if(isInGrid(x+1,y+1)){
+				if(!grid[x+1][y+1].isBlank()){
+					return true;
+				}
+			}
+			if(isInGrid(x,y+1)){
+				if(!grid[x][y+1].isBlank()){
+					return true;
+				}
+			}
+			if(isInGrid(x-1,y+1)){
+				if(!grid[x-1][y+1].isBlank()){
+					return true;
+				}
+			}
+			if(isInGrid(x-1,y)){
+				if(!grid[x-1][y].isBlank()){
+					return true;
+				}
+			}
+			
+		}
+		else{
+			if(isInGrid(x,y-1)){
+				if(!grid[x][y-1].isBlank()){
+					return true;
+				}
+			}
+			if(isInGrid(x+1,y-1)){
+				if(!grid[x+1][y-1].isBlank()){
+					return true;
+				}
+			}
+			if(isInGrid(x+1,y)){
+				if(!grid[x+1][y].isBlank()){
+					return true;
+				}
+			}
+			if(isInGrid(x,y+1)){
+				if(!grid[x][y+1].isBlank()){
+					return true;
+				}
+			}
+			if(isInGrid(x-1,y)){
+				if(!grid[x-1][y].isBlank()){
+					return true;
+				}
+			}
+			if(isInGrid(x-1,y-1)){
+				if(!grid[x-1][y-1].isBlank()){
+					return true;
+				}
+			}
+		}
+		
+		
+		return false;
+	}
+	
+
+	private boolean isInGrid(int x, int y){
+		return(x>=0 && x<grid.length && y>=0 && y<grid[0].length);
 	}
 
 }
