@@ -32,7 +32,7 @@ public class Board implements Serializable{
 	private JPanel boardPanel; //panel for tile area
 	private JPanel menuPanel; //panel for menu bar
 	private JPanel[] columns; //6 vertical columns to assist in a grid layout
-	private JPanel[][] grid; //Each space for a tile is stored here
+	private Tile[][] grid; //Each space for a tile is stored here
 	private JPanel onDeckPreview;
 	
 	
@@ -57,7 +57,7 @@ public class Board implements Serializable{
 		
 		//Fills columns with Panels form grid
 		columns = new JPanel[6];
-		grid = new JPanel[6][6];
+		grid = new Tile[6][6];
 		populateColumns(boardPanel);
 		
 		
@@ -123,13 +123,13 @@ public class Board implements Serializable{
 				columns[x].add(spacer()); //spacing panel
 				columns[x].getComponent(0).setSize(100, 100);
 				for(int y=0; y<5; y++){
-					makeTileSpace(Color.cyan,x,y);
+					makeTileSpace(x,y);
 				}
 				columns[x].add(spacer()); //spacing panel
 			}
 			else{
 				for(int y=0; y<6; y++){
-					makeTileSpace(Color.magenta, x, y);
+					makeTileSpace(x, y);
 				}
 			}
 		
@@ -140,39 +140,28 @@ public class Board implements Serializable{
 	//Incomplete method for adding Panels form Tile class to Board
 	public void addTile(int x, int y){
 		
-		grid[x][y]= GameModel.onDeckTile.getTilePanel();
+		grid[x][y]= GameModel.onDeckTile;
 		columns[x].removeAll();
 		if(x%2 == 0){
 			columns[x].add(spacer());
 			for(int i = 0; i < 5; i ++){
-				columns[x].add(grid[x][i]);
+				columns[x].add(grid[x][i].getTilePanel());
 			}
 			columns[x].add(spacer());
 		}
 		else{
 			for(int i = 0; i < 6; i++){
-				columns[x].add(grid[x][i]);
+				columns[x].add(grid[x][i].getTilePanel());
 			}
 		}
 		masterPanel.repaint();
 		frame.setSize(new Dimension(1800,1100));
 	}
 
-	private void makeTileSpace(Color color, Integer x, Integer y){
-		grid[x][y] = new JPanel(); //creates new button 
-		grid[x][y].setBackground(color);
-		grid[x][y].setBorder(BorderFactory.createLineBorder(Color.black, 5, false));
-		grid[x][y].addMouseListener(new AddTileListener(this,x,y));
-		
-		grid[x][y].setSize(new Dimension(250,180));
-		grid[x][y].setMaximumSize(grid[x][y].getSize());
-		grid[x][y].setMinimumSize(grid[x][y].getSize());
-		
-//		JButton temp = new JButton("Place Tile");
-//		temp.addActionListener(new AddTileListener(this,x,y));
-//		grid[x][y].add(temp);
-		
-		columns[x].add(grid[x][y]); //adds button to grid
+	private void makeTileSpace(Integer x, Integer y){
+		grid[x][y] = new Tile(); //creates new button 
+		grid[x][y].getTilePanel().addMouseListener(new AddTileListener(this,x,y));
+		columns[x].add(grid[x][y].getTilePanel()); //adds Tile to grid
 		
 	}
 	

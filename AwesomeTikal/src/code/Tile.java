@@ -2,6 +2,7 @@ package code;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -28,6 +29,16 @@ public class Tile {
 	private JPanel[] paths = new JPanel[6];
 	
 	
+	//constructor for making blank tiles to populate the board
+	public Tile(){
+		tilePanel.setBackground(Color.magenta);
+		tilePanel.setBorder(BorderFactory.createLineBorder(Color.black, 5, false));
+		tilePanel.setSize(new Dimension(250,180));
+		tilePanel.setMaximumSize(tilePanel.getSize());
+		tilePanel.setMinimumSize(tilePanel.getSize());
+	}
+	
+	//constructor for making tiles in the deck
 	public Tile(int[] sides){
 		this.sides = sides;
 		initPanel();
