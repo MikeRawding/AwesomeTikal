@@ -175,10 +175,16 @@ public class Board implements Serializable{
 			JOptionPane.showMessageDialog(null, "That position is already occupied.");
 			return;
 		}
+		else if(GameModel.getActionPoints() < 3){
+			JOptionPane.showMessageDialog(null, "You don't have enough Action Points (3) remaining");
+			return;
+		}
 		if(tilePlaceable(selectedX, selectedY) || placingStarters){
 			grid[selectedX][selectedY]= t;
 			grid[selectedX][selectedY].getTilePanel().addMouseListener(new SelectTileListener(this,selectedX,selectedY));
-			
+			if(!placingStarters){
+				GameModel.setActionPoints(GameModel.getActionPoints()-3);
+			}
 			refreshColumn(selectedX);
 		}
 		else{

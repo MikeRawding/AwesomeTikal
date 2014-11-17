@@ -27,11 +27,6 @@ public class AddPieceListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		b.getSelectedTile().addPieceToBoard(GameModel.getPlayer(), new Piece(GameModel.getPlayer()));
-		try {
-			GameModel.nextTile();
-		} catch (NoTilesRemainException e1) {
-			JOptionPane.showMessageDialog(null, "No Tiles Remaining");
-		}
 		b.refreshMenuPanel();
 	}
 

@@ -18,7 +18,7 @@ public class GameModel {
 
 	private static ArrayList<Player> playerList = new ArrayList<Player>();
 	private static int currentPlayer = 0;
-	private static int actionPoints = 10;
+	private static int actionPoints = 12;
 	private static JLabel _currentAP;
 	public static Tile onDeckTile;
 	public static JPanel selectedTile;
@@ -35,7 +35,7 @@ public class GameModel {
 		else{
 			currentPlayer = 0;
 		}
-		actionPoints = 10;
+		actionPoints = 12;
 		return playerList.get(currentPlayer);
 	}
 	
