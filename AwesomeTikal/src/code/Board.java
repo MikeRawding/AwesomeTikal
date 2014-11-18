@@ -193,7 +193,7 @@ public class Board implements Serializable{
 			return;
 		}
 		else if(GameModel.getActionPoints() < 3){
-			JOptionPane.showMessageDialog(null, "You don't have enough Action Points (3) remaining");
+			JOptionPane.showMessageDialog(null, "Sorry Not Enough Action Points");
 			return;
 		}
 		if(tilePlaceable(selectedX, selectedY) || placingStarters){

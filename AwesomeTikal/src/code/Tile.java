@@ -136,9 +136,10 @@ public class Tile {
 	public void addPiece(Player player, Piece newPiece){
 		//adds piece to HashMap pieces.  If player is not a Key in piece, it is added first
 		
+		//modified by daziana (removed return statement)
 		if(GameModel.getActionPoints() == 0){
-			JOptionPane.showMessageDialog(null, "You have no action points remaining");
-			return;
+			JOptionPane.showMessageDialog(null, "Sorry Not Enough Action Points");
+			
 		}
 		
 		if(!(pieces.containsKey(player))){
@@ -160,7 +161,7 @@ public class Tile {
 			JOptionPane.showMessageDialog(null, "You can only add pieces to the starting tile");
 		}
 		else if(GameModel.getActionPoints() == 0){
-			JOptionPane.showMessageDialog(null, "You have no action points remaining");
+			JOptionPane.showMessageDialog(null, "Sorry Not Enough Action Points");
 		}
 		else{
 			player.setPiecesRemaining(player.getPiecesRemaing()-1);

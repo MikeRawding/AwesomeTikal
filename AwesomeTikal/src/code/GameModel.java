@@ -12,6 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+
 import resources.NoTilesRemainException;
 
 public class GameModel implements Serializable {
@@ -57,12 +58,12 @@ public class GameModel implements Serializable {
 	}
 	
 	
-	 //changed
+	 //Accessor method modified by daziana
     public static JLabel getCurrentAP(){
         return _currentAP;
     }
 
- //changed
+ //reduce AP method changed by daziana
         public void reduceAP(int i){
             if (actionPoints >=i) {
             actionPoints  = actionPoints-i;
@@ -134,7 +135,50 @@ public class GameModel implements Serializable {
 		
 		
 		new Board();
-				
+		
+		//Game scoring methods ADDED BY DAZIANA ON 11/17
+		
+		/*   
+		 public static scoreGame(){
+		    	
+		    	int play1 = 0;
+		    	int play2 = 0;
+		    	
+		    	for (int i =0; i < "something goes inside of here";i++){
+		    		//goes through each tile in each column
+		    		for (int a = 0; a < col.length;a++){
+		    			if (col[a]!=null){
+		    				
+		    				if (tile.get_play1() > tile.get_play2()){
+		    					if (tile.get_pyramid_level() > 0){
+		    						play1 += tile.get_pyramid_level();
+		    					}
+		    					else{play1++;}
+		    				}
+		    				else if (tile.get_play1() < tile.get_play2()){
+		    					if (tile.get_pyramid_level() > 0){
+		    						play2 += tile.get_pyramid_level();
+		    					}
+		    					else{play2++;}
+		    				}
+		    			}
+		    		}
+		    	}
+		    	if (play1 > play2){
+		    		JOptionPane.showMessageDialog(null, "Player1 WINS, your score is "+play1);
+		    	}
+		    	else if (play2 > play1){
+		    		JOptionPane.showMessageDialog(null, "Player2 WINS, your score is "+play2);
+		    		
+
+		    	}// when play1 = play2 its a draw
+		    	else{
+		    		JOptionPane.showMessageDialog(null, "Draw!");
+		    		}
+		    	
+		    	
+		    }
+				*/
 
 		
 		
