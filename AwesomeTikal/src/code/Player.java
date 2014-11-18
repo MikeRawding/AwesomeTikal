@@ -9,20 +9,20 @@ public class Player implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Color color;
-	private String name;
+	private Color _color;
+	private String _name;
 	
 	
 	
 	private int piecesRemaining; 
 	
 	public Color getColor(){
-		return color;
+		return _color;
 	}
 	
 	public Player (String name, Color color){
-		this.name = name;
-		this.color = color;
+		this._name = name;
+		this._color = color;
 		piecesRemaining = 10;
 	}
 	
