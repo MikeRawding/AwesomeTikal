@@ -145,10 +145,15 @@ public class GameModel implements Serializable {
 		    	int play1 = 0;
 		    	int play2 = 0;
 		    	
-		    	for (int i =0; i < "something goes inside of here";i++){
+		    	HashMap<Player, Integer> scores = new HashMap<Player, Integer>();
+		    	
+		    	
+		    	for (int x =0; x < grid.length;x++){
 		    		//goes through each tile in each column
-		    		for (int a = 0; a < col.length;a++){
-		    			if (col[a]!=null){
+		    		for (int y = 0; y < grid[0].length;y++){
+		    			if (grid[x][y]isatemple){
+		    				
+		    				scores.put(tile.owner,pieces.get(tile.owner)+grid[x][y].getValue());
 		    				
 		    				if (tile.get_play1() > tile.get_play2()){
 		    					if (tile.get_pyramid_level() > 0){
@@ -163,8 +168,11 @@ public class GameModel implements Serializable {
 		    					else{play2++;}
 		    				}
 		    			}
+		    			
 		    		}
 		    	}
+		    	return max value in score(hashmap)
+		    	
 		    	if (play1 > play2){
 		    		JOptionPane.showMessageDialog(null, "Player1 WINS, your score is "+play1);
 		    	}

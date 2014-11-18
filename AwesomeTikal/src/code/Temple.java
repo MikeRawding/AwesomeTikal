@@ -50,6 +50,8 @@ public class Temple extends Tile {
 			throw new UnoccupiedTileException("This tile has no owner");
 		}
 		
+		
+		
 		Entry<Player, ArrayList<Piece>> tempMax = pieces.entrySet().iterator().next();
 		boolean tie = false;
 		for (Entry<Player, ArrayList<Piece>> entry : pieces.entrySet()) {
