@@ -26,13 +26,18 @@ import actionListeners.AddTileListener;
 import actionListeners.EndTurnListener;
 import actionListeners.MovePieceListener;
 import actionListeners.RotateListener;
+import actionListeners.SaveGameListener;
 import actionListeners.SelectTileListener;
 import actionListeners.SetTwoSelectionsListener;
 
 public class Board implements Serializable{
 
 	
-	private JFrame frame; 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private JFrame frame;
 	private JPanel masterPanel; //panel for entire frame
 	private JPanel boardPanel; //panel for tile area
 	private JPanel menuPanel; //panel for menu bar
@@ -146,6 +151,10 @@ public class Board implements Serializable{
 		JButton move = new JButton("Move");
 		move.addActionListener(new MovePieceListener(this));
 		menuPanel.add(move);
+		
+		JButton save = new JButton("Save");
+		save.addActionListener(new SaveGameListener(this));
+		menuPanel.add(save);
 		
 		
 		frame.setSize(new Dimension(1800,1100));
@@ -364,8 +373,68 @@ public class Board implements Serializable{
 				locationValue = grid[x1][y1].getSides()[4];
 				destinationValue = grid[x2][y2].getSides()[1];
 			}
+			else{
+				destinationValue = grid[x2][y2].getSides()[4];
+				locationValue = grid[x1][x2].getSides()[1];
+			}
 		}
-		
+		else if(x1 < x2){
+			if(x1 % 2 == 0){
+				if(y1 == y2){
+					locationValue = grid[x1][y1].getSides()[2];
+					destinationValue = grid[x2][y2].getSides()[5];
+				}
+				else{
+					locationValue = grid[x1][y1].getSides()[3];
+					destinationValue = grid[x2][y2].getSides()[0];
+				}
+			}
+			else{
+				if(y1 == y2){
+					locationValue = grid[x1][y1].getSides()[3];
+					destinationValue = grid[x2][y2].getSides()[0];
+				}
+				else{
+					locationValue = grid[x1][y1].getSides()[2];
+					destinationValue = grid[x2][y2].getSides()[5];
+				}
+			}
+		}
+		else if(x1 > x2){
+			if(x1 % 2 == 0){
+				if(y1 == y2){
+					locationValue = grid[x1][y1].getSides()[0];
+					destinationValue = grid[x2][y2].getSides()[3];
+				}
+				else{
+					locationValue = grid[x1][y1].getSides()[5];
+					destinationValue = grid[x2][y2].getSides()[2];
+				}
+			}
+			else{
+				if(y1 == y2){
+					locationValue = grid[x1][y1].getSides()[5];
+					destinationValue = grid[x2][y2].getSides()[2];
+				}
+				else{
+					locationValue = grid[x1][y1].getSides()[0];
+					destinationValue = grid[x2][y2].getSides()[3];
+				}
+			}
+		}
 		return locationValue + destinationValue;
+	}
+	
+	public int getPrevSelectedX(){
+		return prevSelectedX;
+	}
+	public int getPrevSelectedY(){
+		return prevSelectedY;
+	}
+	public int getSelectedX(){
+		return selectedX;
+	}
+	public int getSelectedY(){
+		return selectedY;
 	}
 }

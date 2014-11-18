@@ -127,6 +127,7 @@ public class GameModel implements Serializable {
 		//Establish players
 		Player p1 = new Player("Tom", Color.cyan);
 		Player p2 = new Player("Mike", Color.ORANGE);
+		
 		GameModel.getPlayerList().add(p1);
 		GameModel.getPlayerList().add(p2);
 		

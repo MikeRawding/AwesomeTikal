@@ -6,10 +6,10 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 public class SaveTest {
-	public static void main(String[] args){
-		GameModel examp = new GameModel();
-		System.out.println(examp.toString());
-		save(examp);
+	public static void saveGame(Board b){
+		//GameModel examp = new GameModel();
+		System.out.println(b.toString());
+		save(b);
 	}
 	
 	public static void save(Serializable objectToSerialize){
