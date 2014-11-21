@@ -77,8 +77,8 @@ public class Board implements Serializable{
 		masterPanel.add(boardPanel);
 		
 		//Fills columns with Panels form grid
-		columns = new JPanel[6];
-		grid = new Tile[6][6];
+		columns = new JPanel[GameModel.getColumnHeight()];
+		grid = new Tile[GameModel.getColumnHeight()][GameModel.getColumnHeight()];
 		populateColumns(boardPanel);
 		
 		
@@ -186,13 +186,13 @@ public class Board implements Serializable{
 			if(x%2==0){
 				columns[x].add(spacer()); //spacing panel
 				columns[x].getComponent(0).setSize(100, 100);
-				for(int y=0; y<5; y++){
+				for(int y=0; y<GameModel.getColumnHeight()-1; y++){
 					makeTileSpace(x,y);
 				}
 				columns[x].add(spacer()); //spacing panel
 			}
 			else{
-				for(int y=0; y<6; y++){
+				for(int y=0; y<GameModel.getColumnHeight(); y++){
 					makeTileSpace(x, y);
 				}
 			}

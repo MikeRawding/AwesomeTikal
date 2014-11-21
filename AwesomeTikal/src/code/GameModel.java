@@ -23,6 +23,18 @@ public class GameModel implements Serializable {
 	private static JLabel _currentAP;
 	public static Tile onDeckTile;
 	public static JPanel selectedTile;
+	private static int columnHeight;
+	
+	public static void setT(){
+		System.out.println("Number of players is: " + playerList.size());
+	
+		int i = 0;
+		while((((i+(i-1)) * (i/2.0)) / playerList.size()) < 15){
+			i++;
+		}
+		columnHeight = i;
+		System.out.println("columnHeight set to: " + columnHeight);
+	}
 	
 	
 	public static Player getPlayer(){
@@ -100,6 +112,10 @@ public class GameModel implements Serializable {
 		}
 	}
 	
+	public static int getColumnHeight(){
+		return columnHeight;
+	}
+	
 	public static ArrayList<Tile> TilesA = new ArrayList<Tile>();
 	public static ArrayList<Tile> TilesB = new ArrayList<Tile>();;
 	public static ArrayList<Tile> TilesC = new ArrayList<Tile>();;
@@ -128,9 +144,14 @@ public class GameModel implements Serializable {
 		//Establish players
 		Player p1 = new Player("Tom", Color.cyan);
 		Player p2 = new Player("Mike", Color.ORANGE);
+		Player p3 = new Player("Tarik", Color.blue);
+		Player p4 = new Player("Taiga", Color.GRAY);
 		
 		GameModel.getPlayerList().add(p1);
 		GameModel.getPlayerList().add(p2);
+		GameModel.getPlayerList().add(p3);
+		GameModel.getPlayerList().add(p4);
+		GameModel.setT();
 		
 		
 		
