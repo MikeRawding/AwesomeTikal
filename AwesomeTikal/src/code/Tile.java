@@ -36,9 +36,9 @@ public class Tile {
 	public Tile(){
 		tilePanel.setBackground(Color.magenta);
 		tilePanel.setBorder(BorderFactory.createLineBorder(Color.black, 5, false));
-		tilePanel.setSize(new Dimension(250,180));
-		tilePanel.setMaximumSize(tilePanel.getSize());
-		tilePanel.setMinimumSize(tilePanel.getSize());
+		tilePanel.setPreferredSize(new Dimension(250,180));
+		tilePanel.setMaximumSize(new Dimension(250,180));
+		tilePanel.setMinimumSize(new Dimension(250,180));
 		isBlank = true;
 	}
 	
@@ -63,9 +63,9 @@ public class Tile {
 			paths[i].setVisible(true);
 		}
 		tilePanel.setLayout(new BoxLayout(tilePanel, BoxLayout.Y_AXIS));
-		tilePanel.setSize(250, 180);
-		tilePanel.setMaximumSize(tilePanel.getSize());
-		tilePanel.setMinimumSize(tilePanel.getSize());
+		tilePanel.setPreferredSize(new Dimension(250, 180));
+		tilePanel.setMaximumSize(new Dimension(250,180));
+		tilePanel.setMinimumSize(new Dimension(250,180));
 		tilePanel.setVisible(true);
 		top.setLayout(new BorderLayout());
 		top.add(paths[0],BorderLayout.WEST);

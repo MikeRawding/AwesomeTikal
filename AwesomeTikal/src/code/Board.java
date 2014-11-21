@@ -9,6 +9,7 @@ package code;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.io.Serializable;
 
 import javax.swing.BorderFactory;
@@ -56,25 +57,26 @@ public class Board implements Serializable{
 		
 		//Frame setup
 		frame = new JFrame("Welcome to Tikal (the game of stealing from the natives)");
-		frame.setSize(new Dimension(1800,1100));
+		//frame.setSize(new Dimension(1800,1100));
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setExtendedState(Frame.MAXIMIZED_BOTH);
 		
 		//Panel for entire board
 		masterPanel = new JPanel();
 		masterPanel.setLayout(new BoxLayout(masterPanel,BoxLayout.X_AXIS));
 		frame.add(masterPanel);
 		
-		JScrollPane scrollPane = new JScrollPane(masterPanel);
-		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		frame.add(scrollPane);
-		
 		
 		//Panel for grid of tiles
 		boardPanel = new JPanel();
 		boardPanel.setLayout(new BoxLayout(boardPanel,0));
 		masterPanel.add(boardPanel);
+		
+		JScrollPane scrollPane = new JScrollPane(boardPanel);
+		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		masterPanel.add(scrollPane);
 		
 		//Fills columns with Panels form grid
 		columns = new JPanel[GameModel.getColumnHeight()];
@@ -103,7 +105,7 @@ public class Board implements Serializable{
 			
 		masterPanel.add(menuPanel);
 		
-		
+		frame.setVisible(true);
 		
 	}
 
@@ -163,8 +165,8 @@ public class Board implements Serializable{
 		save.addActionListener(new SaveGameListener(this));
 		menuPanel.add(save);
 		
-		
-		frame.setSize(new Dimension(1800,1100));
+		frame.setVisible(true);
+		//frame.pack();
 	}
 	
 	//Spacer used to create stagger between columns
@@ -172,6 +174,7 @@ public class Board implements Serializable{
 		Component spacer = Box.createRigidArea(new Dimension(200,100));
 		return spacer;
 	}
+
 
 	
 	
@@ -201,7 +204,7 @@ public class Board implements Serializable{
 	}
 	
 	
-	//Incomplete method for adding Panels form Tile class to Board
+	// method for adding Panels form Tile class to Board
 	public void placeTile(Tile t){
 		
 		if(!grid[selectedX][selectedY].isBlank()){
@@ -230,18 +233,19 @@ public class Board implements Serializable{
 		columns[x].removeAll();
 		if(x%2 == 0){
 			columns[x].add(spacer());
-			for(int i = 0; i < 5; i ++){
+			for(int i = 0; i < GameModel.getColumnHeight()-1; i ++){
 				columns[x].add(grid[x][i].getTilePanel());
 			}
 			columns[x].add(spacer());
 		}
 		else{
-			for(int i = 0; i < 6; i++){
+			for(int i = 0; i < GameModel.getColumnHeight(); i++){
 				columns[x].add(grid[x][i].getTilePanel());
 			}
 		}
 		masterPanel.repaint();
-		frame.setSize(new Dimension(1800,1100));
+		frame.setVisible(true);
+		//frame.pack();
 	}
 
 	private void makeTileSpace(Integer x, Integer y){
@@ -254,7 +258,7 @@ public class Board implements Serializable{
 	public void refreshOnDeckPreview(){
 		JPanel onDeckPreview = GameModel.onDeckTile.getTilePanel();
 		menuPanel.add(onDeckPreview);
-		frame.setSize(new Dimension(1800,1100));
+		frame.setVisible(true);
 	}
 	
 	public void setSelectedX(int x){
