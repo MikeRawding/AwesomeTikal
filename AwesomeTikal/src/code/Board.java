@@ -19,6 +19,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import actionListeners.AddPieceListener;
 import resources.NoTilesRemainException;
@@ -63,6 +64,12 @@ public class Board implements Serializable{
 		masterPanel = new JPanel();
 		masterPanel.setLayout(new BoxLayout(masterPanel,BoxLayout.X_AXIS));
 		frame.add(masterPanel);
+		
+		JScrollPane scrollPane = new JScrollPane(masterPanel);
+		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		frame.add(scrollPane);
+		
 		
 		//Panel for grid of tiles
 		boardPanel = new JPanel();
