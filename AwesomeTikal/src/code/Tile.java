@@ -134,20 +134,16 @@ public class Tile {
 	}
 	
 	public void addPiece(Player player, Piece newPiece){
-		//adds piece to HashMap pieces.  If player is not a Key in piece, it is added first
+		//adds piece to HashMap pieces.  If player is not a Key in pieces, it is added first
 		
 		//modified by daziana (removed return statement)
-		if(GameModel.getActionPoints() == 0){
-			JOptionPane.showMessageDialog(null, "Sorry Not Enough Action Points");
-			
-		}
+	
 		
 		if(!(pieces.containsKey(player))){
 			pieces.put(player, new ArrayList<Piece>());
 		}
 		pieces.get(player).add(newPiece);
 		refreshPiecesPanel();
-		GameModel.setActionPoints(GameModel.getActionPoints()-1);
 				
 	}
 	
@@ -165,6 +161,7 @@ public class Tile {
 		}
 		else{
 			player.setPiecesRemaining(player.getPiecesRemaing()-1);
+			GameModel.setActionPoints(GameModel.getActionPoints()-1);
 			addPiece(player, newPiece);
 		}
 		

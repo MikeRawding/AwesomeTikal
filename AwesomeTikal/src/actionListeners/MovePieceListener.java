@@ -16,6 +16,7 @@ public class MovePieceListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		b.setTwoSelections(false);
+		b.movePiece(b.getPrevSelectedX(), b.getPrevSelectedY(), b.getSelectedX(), b.getSelectedY());
 		System.out.println(b.calculatePath(b.getPrevSelectedX(), b.getPrevSelectedY(), b.getSelectedX(), b.getSelectedY()));
 	}
 

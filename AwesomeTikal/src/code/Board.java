@@ -23,6 +23,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import actionListeners.AddPieceListener;
+import resources.InvalidMoveException;
+import resources.NoActionPointsException;
 import resources.NoTilesRemainException;
 import actionListeners.AddTileListener;
 import actionListeners.EndTurnListener;
@@ -434,6 +436,24 @@ public class Board implements Serializable{
 			}
 		}
 		return locationValue + destinationValue;
+	}
+	
+	public void movePiece(int fromX, int fromY, int toX, int toY){
+		if((calculatePath(fromX, fromY, toX, toY) > GameModel.getActionPoints())){
+			JOptionPane.showMessageDialog(null,"No enough action points remaining");
+			return;
+		}
+		try{
+			Tile.move(GameModel.getPlayer(), grid[fromX][fromY], grid[toX][toY]);
+			GameModel.setActionPoints(GameModel.getActionPoints()-calculatePath(fromX, fromY, toX, toY));
+		}
+		catch(InvalidMoveException e){
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		} catch (NoActionPointsException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
+		refreshMenuPanel();
+		frame.setVisible(true);
 	}
 	
 	public int getPrevSelectedX(){
