@@ -99,8 +99,9 @@ public class Board implements Serializable{
 		//Make and add menu bar
 		menuPanel = new JPanel();
 		menuPanel.setLayout(new BoxLayout(menuPanel,1));
-		menuPanel.setSize(300, 900);
-		menuPanel.setMaximumSize(menuPanel.getSize());
+		menuPanel.setPreferredSize(new Dimension(250, 9000));
+		menuPanel.setMaximumSize(new Dimension(250, 9000));
+		menuPanel.setMinimumSize(new Dimension(250, 9000));
 		
 		
 		refreshMenuPanel();
@@ -111,6 +112,13 @@ public class Board implements Serializable{
 		
 	}
 
+	private void setButtonSize(JButton in){
+		Dimension d = new Dimension(250, 50);
+		in.setPreferredSize(d);
+		in.setMaximumSize(d);
+		in.setMinimumSize(d);
+	}
+	
 	public void refreshMenuPanel() {
 		menuPanel.removeAll();
 		
@@ -118,9 +126,7 @@ public class Board implements Serializable{
 
 		//endTurn button
 		JButton endTurn = new JButton("End Turn");
-		endTurn.setSize(300, 100);
-		endTurn.setMaximumSize(endTurn.getSize());
-		endTurn.setMinimumSize(endTurn.getSize());
+		setButtonSize(endTurn);
 		endTurn.addActionListener(new EndTurnListener(this,menuPanel));
 		menuPanel.add(endTurn);
 
@@ -128,44 +134,45 @@ public class Board implements Serializable{
 		JLabel aP = new JLabel("Action Points Remaining: "+GameModel.getActionPoints()+"");
 		menuPanel.add(aP);
 		
-		//new tile preview
-		JPanel onDeckPreview = GameModel.onDeckTile.getTilePanel();
-		menuPanel.add(onDeckPreview);
 		
 		//rotate buttonOnDeck
-		JButton rotateOnDeckCloclwise = new JButton("Rotate");
-		rotateOnDeckCloclwise.setSize(100,100);
-		rotateOnDeckCloclwise.setMaximumSize(rotateOnDeckCloclwise.getSize());
-		rotateOnDeckCloclwise.setMaximumSize(rotateOnDeckCloclwise.getSize());
-		rotateOnDeckCloclwise.addActionListener(new RotateListener(this, true));
-		menuPanel.add(rotateOnDeckCloclwise);
+		JButton rotateOnDeckClockwise = new JButton("Rotate");
+		setButtonSize(rotateOnDeckClockwise);
+		rotateOnDeckClockwise.addActionListener(new RotateListener(this, true));
+		menuPanel.add(rotateOnDeckClockwise);
 		
 		//place Tile button
 		JButton placeTile = new JButton("Place Tile");
-		placeTile.setSize(100,100);
-		placeTile.setMaximumSize(placeTile.getSize());
-		placeTile.setMaximumSize(placeTile.getSize());
+		setButtonSize(placeTile);
 		placeTile.addActionListener(new AddTileListener(this));
 		menuPanel.add(placeTile);
 
 		//add piece to board button
 		JButton addPieceToBoard = new JButton("Add piece to selected tile");
+		setButtonSize(addPieceToBoard);
 		addPieceToBoard.addActionListener(new AddPieceListener(this));
 		menuPanel.add(addPieceToBoard);
 		
 		
 		//move piece button
 		JButton enableTwoSelections = new JButton("Select two Tiles for Move");
+		setButtonSize(enableTwoSelections);
 		enableTwoSelections.addActionListener(new SetTwoSelectionsListener(this));
 		menuPanel.add(enableTwoSelections);
 		
 		JButton move = new JButton("Move");
+		setButtonSize(move);
 		move.addActionListener(new MovePieceListener(this));
 		menuPanel.add(move);
 		
 		JButton save = new JButton("Save");
+		setButtonSize(save);
 		save.addActionListener(new SaveGameListener(this));
 		menuPanel.add(save);
+		
+		//new tile preview
+		JPanel onDeckPreview = GameModel.onDeckTile.getTilePanel();
+		menuPanel.add(onDeckPreview);
 		
 		frame.setVisible(true);
 		//frame.pack();
