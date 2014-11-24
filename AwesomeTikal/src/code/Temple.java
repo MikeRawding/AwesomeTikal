@@ -1,7 +1,11 @@
 package code;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Map.Entry;
+
+import javax.swing.JLabel;
 
 import resources.InvalidMoveException;
 import resources.NoOwnerException;
@@ -18,10 +22,43 @@ public class Temple extends Tile {
 	public Temple(int[] sides, int startingValue){
 		super(sides);
 		templeValue = startingValue;
+		center.add(new JLabel("Temple: "+ templeValue));
+	}
+	
+
+	//adds piece to HashMap pieces.  If player is not a Key in pieces, it is added first
+	public void addPiece(Player player, Piece newPiece){
+		
+				
+		if(!(pieces.containsKey(player))){
+			pieces.put(player, new ArrayList<Piece>());
+		}
+		pieces.get(player).add(newPiece);
+		refreshCenterPanel();
+	}
+	
+	private void refreshCenterPanel(){
+		center.removeAll();
+		System.out.println("temple refresh center ran");
+		center.add(new JLabel("Temple: "+ templeValue));
+		Iterator it = pieces.entrySet().iterator();
+		while(it.hasNext()){
+			Map.Entry<Player, ArrayList<Piece>>ent = (Map.Entry)it.next();
+	        if(ent.getValue().size() > 0){
+				JLabel temp = new JLabel(""+ent.getValue().size()+"");
+				temp.setBackground(ent.getKey().getColor());
+				temp.setOpaque(true);
+		        center.add(temp);
+	        }
+		}
+		
 	}
 	
 	public int incrementTempleValue(){
-		return templeValue++;
+		templeValue++;
+		
+		
+		return templeValue;
 	}
 	
 	public void setGuard(Player player) throws InvalidMoveException, NoOwnerException{

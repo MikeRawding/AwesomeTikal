@@ -25,7 +25,7 @@ public class Tile {
 	private int[] sides;
 	private JPanel tilePanel = new JPanel();
 	private JPanel top = new JPanel();
-	private JPanel center = new JPanel();
+	protected JPanel center = new JPanel();
 	private JPanel bottom = new JPanel();
 	private JPanel[] paths = new JPanel[6];
 	private boolean isBlank;
@@ -118,7 +118,7 @@ public class Tile {
 		destination.addPiece(player, location.removePiece(player));
 	}
 	
-	private void refreshPiecesPanel(){
+	private void refreshCenterPanel(){
 		center.removeAll();
 		Iterator it = pieces.entrySet().iterator();
 		while(it.hasNext()){
@@ -133,18 +133,15 @@ public class Tile {
 		
 	}
 	
+	//adds piece to HashMap pieces.  If player is not a Key in pieces, it is added first
 	public void addPiece(Player player, Piece newPiece){
-		//adds piece to HashMap pieces.  If player is not a Key in pieces, it is added first
 		
-		//modified by daziana (removed return statement)
-	
-		
+				
 		if(!(pieces.containsKey(player))){
 			pieces.put(player, new ArrayList<Piece>());
 		}
 		pieces.get(player).add(newPiece);
-		refreshPiecesPanel();
-				
+		refreshCenterPanel();
 	}
 	
 	public void addPieceToBoard(Player player, Piece newPiece){
@@ -176,7 +173,7 @@ public class Tile {
 		}
 		
 		Piece temp = pieces.get(player).remove(0);
-		refreshPiecesPanel();
+		refreshCenterPanel();
 		return temp;
 		
 	
