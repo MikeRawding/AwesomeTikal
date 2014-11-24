@@ -6,12 +6,13 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
+import java.util.Stack;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
 
 import resources.NoTilesRemainException;
 
@@ -21,11 +22,12 @@ public class GameModel implements Serializable {
 	private static int currentPlayer = 0;
 	private static int actionPoints = 12;
 	private static JLabel _currentAP;
-	public static Tile onDeckTile;
+	private static Tile onDeckTile;
 	public static JPanel selectedTile;
 	private static int columnHeight;
+	private static Stack<Tile> deck;
 	
-	public static void setT(){
+	public static void setColumnHeight(){
 		System.out.println("Number of players is: " + playerList.size());
 	
 		int i = 0;
@@ -87,24 +89,9 @@ public class GameModel implements Serializable {
     }
 	
 	public static Tile nextTile() throws NoTilesRemainException{
-		if(TilesA.size() > 0){
-			Random r = new Random();
-			onDeckTile = TilesA.remove(r.nextInt(TilesA.size()));
-			return onDeckTile;
-		}
-		else if(TilesB.size() > 0){
-			Random r = new Random();
-			onDeckTile = TilesB.remove(r.nextInt(TilesB.size()));
-			return onDeckTile;
-		}
-		else if(TilesC.size() > 0){
-			Random r = new Random();
-			onDeckTile = TilesC.remove(r.nextInt(TilesC.size()));
-			return onDeckTile;
-		}
-		else if(TilesD.size() > 0){
-			Random r = new Random();
-			onDeckTile = TilesD.remove(r.nextInt(TilesD.size()));
+		if(!deck.isEmpty()){
+			onDeckTile = deck.pop();
+			System.out.println("Tiles remaining: " + deck.size());
 			return onDeckTile;
 		}
 		else{
@@ -115,32 +102,74 @@ public class GameModel implements Serializable {
 	public static int getColumnHeight(){
 		return columnHeight;
 	}
+
+
+	public static void initDeck(){
+		
+		deck = new Stack<Tile>();
+		int boardSize = (columnHeight * columnHeight) - (columnHeight/2);
+		if(columnHeight % 2 == 1){
+			boardSize--;
+		}
+		
+		System.out.println("Board size is: " + boardSize);
+		int p = columnHeight + playerList.size();
+		
+		
+		for(int i = 0; i < p; i++){
+			deck.push(new Temple(randomSides(),1));
+		}
+		for(int i = 0; i < p - 2; i++){
+			deck.push(new Temple(randomSides(),2));
+		}
+		for(int i = 0; i < p - 4; i++){
+			deck.push(new Temple(randomSides(),3));
+		}
+		for(int i = 0; i < p - 6; i++){
+			deck.push(new Temple(randomSides(),4));
+		}
+		while(deck.size() < boardSize){
+			deck.push(new Tile(randomSides()));
+		}
+		System.out.println(deck.size());
+		Collections.shuffle(deck);
+		onDeckTile = deck.pop();
+		
+	}
 	
-	public static ArrayList<Tile> TilesA = new ArrayList<Tile>();
-	public static ArrayList<Tile> TilesB = new ArrayList<Tile>();;
-	public static ArrayList<Tile> TilesC = new ArrayList<Tile>();;
-	public static ArrayList<Tile> TilesD = new ArrayList<Tile>();;
+	
+	private static int[] randomSides(){
+		int[] result = new int[6];
+		int sidesWithPaths;
+		Random ran = new Random();
+		
+		do{
+			sidesWithPaths = 0;
+			for(int i = 0; i < 6; i++){
+				result[i] = ran.nextInt(3);
+				if(result[i] != 0){
+					sidesWithPaths++;
+				}
+			}
+		}	
+		while(sidesWithPaths > 3);	
+		
+		
+		return result;
+	}
+	
+	public static Tile getOnDeckTile(){
+		return onDeckTile;
+	}
+
+	
 	
 	public static void main(String[] args) {
 		
 			
 		
-		//Establish tiles
-		GameModel.TilesA.add(new Tile(new int[] {1,1,1,1,4,5}));
-		GameModel.TilesA.add(new Tile(new int[] {2,2,2,2,4,5}));
-		GameModel.TilesA.add(new Tile(new int[] {3,3,3,3,4,5}));
-		GameModel.TilesA.add(new Tile(new int[] {0,1,2,3,4,5}));
-		GameModel.TilesA.add(new Tile(new int[] {0,1,2,3,4,5}));
-		GameModel.TilesA.add(new Tile(new int[] {0,1,2,3,4,5}));
-		GameModel.TilesA.add(new Tile(new int[] {0,1,2,3,4,5}));
 		
-		try {
-			GameModel.nextTile();
-		} catch (NoTilesRemainException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+			
 		//Establish players
 		Player p1 = new Player("Tom", Color.cyan);
 		Player p2 = new Player("Mike", Color.ORANGE);
@@ -151,12 +180,21 @@ public class GameModel implements Serializable {
 		GameModel.getPlayerList().add(p2);
 		GameModel.getPlayerList().add(p3);
 		GameModel.getPlayerList().add(p4);
-		GameModel.setT();
 		
 		
+		GameModel.setColumnHeight();
+		
+		initDeck();
 		
 		
 		new Board();
+		
+		
+		
+		
+		
+		
+		
 		
 		//Game scoring methods ADDED BY DAZIANA ON 11/17
 		

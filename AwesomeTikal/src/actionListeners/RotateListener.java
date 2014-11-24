@@ -20,10 +20,10 @@ public class RotateListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(clockwise){
-			GameModel.onDeckTile.rotateClockwise();
+			GameModel.getOnDeckTile().rotateClockwise();
 		}
 		else{
-			GameModel.onDeckTile.rotateCounterClockwise();
+			GameModel.getOnDeckTile().rotateCounterClockwise();
 		}
 		b.refreshOnDeckPreview();
 	}

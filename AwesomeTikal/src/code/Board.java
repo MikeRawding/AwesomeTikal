@@ -87,21 +87,36 @@ public class Board implements Serializable{
 		
 		
 		//sets starting tile
-		placeTile(new Tile(new int[]{0,1,2,3,4,5}));
+		try {
+			placeTile(new Tile(new int[]{0,1,2,3,4,5}));
+		} catch (InvalidMoveException | NoActionPointsException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+			e.printStackTrace();
+		}
 		grid[selectedX][selectedY].setPiecesPlaceable(true);
 		selectedX = 1;
-		placeTile(new Tile(new int[]{0,0,0,2,1,0}));
+		try {
+			placeTile(new Tile(new int[]{0,0,0,2,1,0}));
+		} catch (InvalidMoveException | NoActionPointsException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+			e.printStackTrace();
+		}
 		selectedX = 0;
 		selectedY = 1;
-		placeTile(new Tile(new int[]{0,1,1,2,1,0}));
+		try {
+			placeTile(new Tile(new int[]{0,1,1,2,1,0}));
+		} catch (InvalidMoveException | NoActionPointsException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+			e.printStackTrace();
+		}
 		placingStarters = false;
 		
 		//Make and add menu bar
 		menuPanel = new JPanel();
 		menuPanel.setLayout(new BoxLayout(menuPanel,1));
-		menuPanel.setPreferredSize(new Dimension(250, 9000));
-		menuPanel.setMaximumSize(new Dimension(250, 9000));
-		menuPanel.setMinimumSize(new Dimension(250, 9000));
+		menuPanel.setPreferredSize(new Dimension(350, 9000));
+		menuPanel.setMaximumSize(new Dimension(350, 9000));
+		menuPanel.setMinimumSize(new Dimension(350, 9000));
 		
 		
 		refreshMenuPanel();
@@ -171,7 +186,7 @@ public class Board implements Serializable{
 		menuPanel.add(save);
 		
 		//new tile preview
-		JPanel onDeckPreview = GameModel.onDeckTile.getTilePanel();
+		JPanel onDeckPreview = GameModel.getOnDeckTile().getTilePanel();
 		menuPanel.add(onDeckPreview);
 		
 		frame.setVisible(true);
@@ -214,15 +229,13 @@ public class Board implements Serializable{
 	
 	
 	// method for adding Panels form Tile class to Board
-	public void placeTile(Tile t){
+	public void placeTile(Tile t) throws InvalidMoveException, NoActionPointsException{
 		
 		if(!grid[selectedX][selectedY].isBlank()){
-			JOptionPane.showMessageDialog(null, "That position is already occupied.");
-			return;
+			throw new InvalidMoveException("That position is already occupied.");
 		}
 		else if(GameModel.getActionPoints() < 3){
-			JOptionPane.showMessageDialog(null, "Sorry Not Enough Action Points");
-			return;
+			throw new NoActionPointsException("Sorry Not Enough Action Points");
 		}
 		if(tilePlaceable(selectedX, selectedY) || placingStarters){
 			grid[selectedX][selectedY]= t;
@@ -233,7 +246,7 @@ public class Board implements Serializable{
 			refreshColumn(selectedX);
 		}
 		else{
-			JOptionPane.showMessageDialog(null, "You must place the new tile next to an existing tile.");
+			throw new InvalidMoveException("There must be a path to the tile you are placing");
 		}
 			
 	}
@@ -265,7 +278,7 @@ public class Board implements Serializable{
 	}
 	
 	public void refreshOnDeckPreview(){
-		JPanel onDeckPreview = GameModel.onDeckTile.getTilePanel();
+		JPanel onDeckPreview = GameModel.getOnDeckTile().getTilePanel();
 		menuPanel.add(onDeckPreview);
 		frame.setVisible(true);
 	}
@@ -296,36 +309,37 @@ public class Board implements Serializable{
 	
 	
 	
+	
 	private boolean tilePlaceable(int x, int y){
 		
 		if(x%2==0){
 			if(isInGrid(x,y-1)){
-				if(!grid[x][y-1].isBlank()){
+				if(!grid[x][y-1].isBlank() && calculatePath(x, y, x, y-1, GameModel.getOnDeckTile()) != 0){
 					return true;
 				}
 			}
 			if(isInGrid(x+1,y)){
-				if(!grid[x+1][y].isBlank()){
+				if(!grid[x+1][y].isBlank() && calculatePath(x, y, x+1, y, GameModel.getOnDeckTile()) != 0){
 					return true;
 				}
 			}
 			if(isInGrid(x+1,y+1)){
-				if(!grid[x+1][y+1].isBlank()){
+				if(!grid[x+1][y+1].isBlank() && calculatePath(x, y, x+1, y+1, GameModel.getOnDeckTile()) != 0){
 					return true;
 				}
 			}
 			if(isInGrid(x,y+1)){
-				if(!grid[x][y+1].isBlank()){
+				if(!grid[x][y+1].isBlank() && calculatePath(x, y, x, y+1, GameModel.getOnDeckTile()) != 0){
 					return true;
 				}
 			}
 			if(isInGrid(x-1,y+1)){
-				if(!grid[x-1][y+1].isBlank()){
+				if(!grid[x-1][y+1].isBlank() && calculatePath(x, y, x-1, y+1, GameModel.getOnDeckTile()) != 0){
 					return true;
 				}
 			}
 			if(isInGrid(x-1,y)){
-				if(!grid[x-1][y].isBlank()){
+				if(!grid[x-1][y].isBlank() && calculatePath(x, y, x-1, y, GameModel.getOnDeckTile()) != 0){
 					return true;
 				}
 			}
@@ -333,32 +347,32 @@ public class Board implements Serializable{
 		}
 		else{
 			if(isInGrid(x,y-1)){
-				if(!grid[x][y-1].isBlank()){
+				if(!grid[x][y-1].isBlank() && calculatePath(x, y, x, y-1, GameModel.getOnDeckTile()) != 0){
 					return true;
 				}
 			}
 			if(isInGrid(x+1,y-1)){
-				if(!grid[x+1][y-1].isBlank()){
+				if(!grid[x+1][y-1].isBlank() && calculatePath(x, y, x+1, y-1, GameModel.getOnDeckTile()) != 0){
 					return true;
 				}
 			}
 			if(isInGrid(x+1,y)){
-				if(!grid[x+1][y].isBlank()){
+				if(!grid[x+1][y].isBlank() && calculatePath(x, y, x+1, y, GameModel.getOnDeckTile()) != 0){
 					return true;
 				}
 			}
 			if(isInGrid(x,y+1)){
-				if(!grid[x][y+1].isBlank()){
+				if(!grid[x][y+1].isBlank() && calculatePath(x, y, x, y+1, GameModel.getOnDeckTile()) != 0){
 					return true;
 				}
 			}
 			if(isInGrid(x-1,y)){
-				if(!grid[x-1][y].isBlank()){
+				if(!grid[x-1][y].isBlank() && calculatePath(x, y, x-1, y, GameModel.getOnDeckTile()) != 0){
 					return true;
 				}
 			}
 			if(isInGrid(x-1,y-1)){
-				if(!grid[x-1][y-1].isBlank()){
+				if(!grid[x-1][y-1].isBlank() && calculatePath(x, y, x-1, y-1, GameModel.getOnDeckTile()) != 0){
 					return true;
 				}
 			}
@@ -394,8 +408,8 @@ public class Board implements Serializable{
 				destinationValue = grid[x2][y2].getSides()[1];
 			}
 			else{
+				locationValue = grid[x1][y1].getSides()[1];
 				destinationValue = grid[x2][y2].getSides()[4];
-				locationValue = grid[x1][x2].getSides()[1];
 			}
 		}
 		else if(x1 < x2){
@@ -438,6 +452,66 @@ public class Board implements Serializable{
 				}
 				else{
 					locationValue = grid[x1][y1].getSides()[0];
+					destinationValue = grid[x2][y2].getSides()[3];
+				}
+			}
+		}
+		return locationValue + destinationValue;
+	}
+	
+	public int calculatePath(int x1, int y1, int x2, int y2, Tile t){
+		int locationValue = 0 ;
+		int destinationValue = 0;
+		if(x1 == x2){
+			if(y1 < y2){
+				locationValue = t.getSides()[4];
+				destinationValue = grid[x2][y2].getSides()[1];
+			}
+			else{
+				locationValue = t.getSides()[1];
+				destinationValue = grid[x2][y2].getSides()[4];
+			}
+		}
+		else if(x1 < x2){
+			if(x1 % 2 == 0){
+				if(y1 == y2){
+					locationValue = t.getSides()[2];
+					destinationValue = grid[x2][y2].getSides()[5];
+				}
+				else{
+					locationValue = t.getSides()[3];
+					destinationValue = grid[x2][y2].getSides()[0];
+				}
+			}
+			else{
+				if(y1 == y2){
+					locationValue = t.getSides()[3];
+					destinationValue = grid[x2][y2].getSides()[0];
+				}
+				else{
+					locationValue = t.getSides()[2];
+					destinationValue = grid[x2][y2].getSides()[5];
+				}
+			}
+		}
+		else if(x1 > x2){
+			if(x1 % 2 == 0){
+				if(y1 == y2){
+					locationValue = t.getSides()[0];
+					destinationValue = grid[x2][y2].getSides()[3];
+				}
+				else{
+					locationValue = t.getSides()[5];
+					destinationValue = grid[x2][y2].getSides()[2];
+				}
+			}
+			else{
+				if(y1 == y2){
+					locationValue = t.getSides()[5];
+					destinationValue = grid[x2][y2].getSides()[2];
+				}
+				else{
+					locationValue = t.getSides()[0];
 					destinationValue = grid[x2][y2].getSides()[3];
 				}
 			}
