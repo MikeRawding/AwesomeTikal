@@ -25,6 +25,7 @@ import javax.swing.JScrollPane;
 import actionListeners.AddPieceListener;
 import resources.InvalidMoveException;
 import resources.NoActionPointsException;
+import resources.NoOwnerException;
 import resources.NoTilesRemainException;
 import actionListeners.AddTileListener;
 import actionListeners.EndTurnListener;
@@ -36,7 +37,7 @@ import actionListeners.SetTwoSelectionsListener;
 
 public class Board implements Serializable{
 
-	
+
 	/**
 	 * 
 	 */
@@ -53,39 +54,39 @@ public class Board implements Serializable{
 	private int prevSelectedY = 0;
 	private boolean twoSelections = false;
 	private boolean placingStarters = true;
-	
+
 	//The only constructor of this class.  GUI is displayed when constructed.
 	public Board(){
-		
+
 		//Frame setup
 		frame = new JFrame("Welcome to Tikal (the game of stealing from the natives)");
 		//frame.setSize(new Dimension(1800,1100));
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setExtendedState(Frame.MAXIMIZED_BOTH);
-		
+
 		//Panel for entire board
 		masterPanel = new JPanel();
 		masterPanel.setLayout(new BoxLayout(masterPanel,BoxLayout.X_AXIS));
 		frame.add(masterPanel);
-		
-		
+
+
 		//Panel for grid of tiles
 		boardPanel = new JPanel();
 		boardPanel.setLayout(new BoxLayout(boardPanel,0));
 		masterPanel.add(boardPanel);
-		
+
 		JScrollPane scrollPane = new JScrollPane(boardPanel);
 		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		masterPanel.add(scrollPane);
-		
+
 		//Fills columns with Panels form grid
 		columns = new JPanel[GameModel.getColumnHeight()];
 		grid = new Tile[GameModel.getColumnHeight()][GameModel.getColumnHeight()];
 		populateColumns(boardPanel);
-		
-		
+
+
 		//sets starting tile
 		try {
 			placeTile(new Tile(new int[]{0,1,2,3,4,5}));
@@ -110,21 +111,21 @@ public class Board implements Serializable{
 			e.printStackTrace();
 		}
 		placingStarters = false;
-		
+
 		//Make and add menu bar
 		menuPanel = new JPanel();
 		menuPanel.setLayout(new BoxLayout(menuPanel,1));
 		menuPanel.setPreferredSize(new Dimension(350, 9000));
 		menuPanel.setMaximumSize(new Dimension(350, 9000));
 		menuPanel.setMinimumSize(new Dimension(350, 9000));
-		
-		
+
+
 		refreshMenuPanel();
-			
+
 		masterPanel.add(menuPanel);
-		
+
 		frame.setVisible(true);
-		
+
 	}
 
 	private void setButtonSize(JButton in){
@@ -133,10 +134,10 @@ public class Board implements Serializable{
 		in.setMaximumSize(d);
 		in.setMinimumSize(d);
 	}
-	
+
 	public void refreshMenuPanel() {
 		menuPanel.removeAll();
-		
+
 		menuPanel.setBackground(GameModel.getPlayer().getColor());
 
 		//endTurn button
@@ -148,14 +149,14 @@ public class Board implements Serializable{
 		//AP counter
 		JLabel aP = new JLabel("Action Points Remaining: "+GameModel.getActionPoints()+"");
 		menuPanel.add(aP);
-		
-		
+
+
 		//rotate buttonOnDeck
 		JButton rotateOnDeckClockwise = new JButton("Rotate");
 		setButtonSize(rotateOnDeckClockwise);
 		rotateOnDeckClockwise.addActionListener(new RotateListener(this, true));
 		menuPanel.add(rotateOnDeckClockwise);
-		
+
 		//place Tile button
 		JButton placeTile = new JButton("Place Tile");
 		setButtonSize(placeTile);
@@ -167,32 +168,43 @@ public class Board implements Serializable{
 		setButtonSize(addPieceToBoard);
 		addPieceToBoard.addActionListener(new AddPieceListener(this));
 		menuPanel.add(addPieceToBoard);
-		
-		
+
+
 		//move piece button
 		JButton enableTwoSelections = new JButton("Select two Tiles for Move");
 		setButtonSize(enableTwoSelections);
 		enableTwoSelections.addActionListener(new SetTwoSelectionsListener(this));
 		menuPanel.add(enableTwoSelections);
-		
+
 		JButton move = new JButton("Move");
 		setButtonSize(move);
 		move.addActionListener(new MovePieceListener(this));
 		menuPanel.add(move);
-		
+
 		JButton save = new JButton("Save");
 		setButtonSize(save);
 		save.addActionListener(new SaveGameListener(this));
 		menuPanel.add(save);
-		
+
+		//Scoreboard!!
+		JPanel scoreBoard = new JPanel();
+		scoreBoard.setLayout(new BoxLayout(scoreBoard, 1));
+		for(int i = 0; i  < GameModel.getPlayerList().size(); i++){
+			JLabel temp = new JLabel(GameModel.getPlayerList().get(i).getName() + ": " + GameModel.getPlayerList().get(i).getScore());
+			temp.setBackground(GameModel.getPlayerList().get(i).getColor());
+			temp.setOpaque(true);
+			scoreBoard.add(temp);
+		}
+		menuPanel.add(scoreBoard);
+
 		//new tile preview
 		JPanel onDeckPreview = GameModel.getOnDeckTile().getTilePanel();
 		menuPanel.add(onDeckPreview);
-		
+
 		frame.setVisible(true);
 		//frame.pack();
 	}
-	
+
 	//Spacer used to create stagger between columns
 	private Component spacer(){
 		Component spacer = Box.createRigidArea(new Dimension(200,100));
@@ -200,14 +212,14 @@ public class Board implements Serializable{
 	}
 
 
-	
-	
+
+
 	private void populateColumns(JPanel boardPanel) {
 		for(int i = 0; i < columns.length; i++){
 			columns[i] = new JPanel();
 			columns[i].setLayout(new BoxLayout(columns[i],1));
 		}
-		
+
 		for(int x=0; x<columns.length; x++){
 			boardPanel.add(columns[x]);
 			if(x%2==0){
@@ -223,14 +235,14 @@ public class Board implements Serializable{
 					makeTileSpace(x, y);
 				}
 			}
-		
+
 		}
 	}
-	
-	
+
+
 	// method for adding Panels form Tile class to Board
 	public void placeTile(Tile t) throws InvalidMoveException, NoActionPointsException{
-		
+
 		if(!grid[selectedX][selectedY].isBlank()){
 			throw new InvalidMoveException("That position is already occupied.");
 		}
@@ -240,6 +252,10 @@ public class Board implements Serializable{
 		if(tilePlaceable(selectedX, selectedY) || placingStarters){
 			grid[selectedX][selectedY]= t;
 			grid[selectedX][selectedY].getTilePanel().addMouseListener(new SelectTileListener(this,selectedX,selectedY));
+			if(t instanceof Volcano){
+				score();
+				refreshMenuPanel();
+			}
 			if(!placingStarters){
 				GameModel.setActionPoints(GameModel.getActionPoints()-3);
 			}
@@ -248,7 +264,7 @@ public class Board implements Serializable{
 		else{
 			throw new InvalidMoveException("There must be a path to the tile you are placing");
 		}
-			
+
 	}
 
 	private void refreshColumn(int x) {
@@ -274,19 +290,19 @@ public class Board implements Serializable{
 		grid[x][y] = new Tile(); //creates new button 
 		grid[x][y].getTilePanel().addMouseListener(new SelectTileListener(this,x,y));
 		columns[x].add(grid[x][y].getTilePanel()); //adds Tile to grid
-		
+
 	}
-	
+
 	public void refreshOnDeckPreview(){
 		JPanel onDeckPreview = GameModel.getOnDeckTile().getTilePanel();
 		menuPanel.add(onDeckPreview);
 		frame.setVisible(true);
 	}
-	
+
 	public void setSelectedX(int x){
 		selectedX = x;
 	}
-	
+
 	public void setSelectedY(int y){
 		selectedY = y;
 	}
@@ -306,12 +322,12 @@ public class Board implements Serializable{
 		selectedY = y;
 		grid[selectedX][selectedY].getTilePanel().setBorder(BorderFactory.createLineBorder(Color.green, 5, false));
 	}
-	
-	
-	
-	
+
+
+
+
 	private boolean tilePlaceable(int x, int y){
-		
+
 		if(x%2==0){
 			if(isInGrid(x,y-1)){
 				if(!grid[x][y-1].isBlank() && calculatePath(x, y, x, y-1, GameModel.getOnDeckTile()) != 0){
@@ -343,7 +359,7 @@ public class Board implements Serializable{
 					return true;
 				}
 			}
-			
+
 		}
 		else{
 			if(isInGrid(x,y-1)){
@@ -377,20 +393,20 @@ public class Board implements Serializable{
 				}
 			}
 		}
-		
-		
+
+
 		return false;
 	}
-	
+
 
 	private boolean isInGrid(int x, int y){
 		return(x>=0 && x<grid.length && y>=0 && y<grid[0].length);
 	}
-	
+
 	public Tile[][] getGrid(){
 		return grid;
 	}
-	
+
 	public Tile getSelectedTile(){
 		return grid[selectedX][selectedY];
 	}
@@ -398,7 +414,7 @@ public class Board implements Serializable{
 	public void setTwoSelections(boolean b){
 		twoSelections = b;
 	}
-	
+
 	public int calculatePath(int x1, int y1, int x2, int y2){
 		int locationValue = 0 ;
 		int destinationValue = 0;
@@ -458,7 +474,7 @@ public class Board implements Serializable{
 		}
 		return locationValue + destinationValue;
 	}
-	
+
 	public int calculatePath(int x1, int y1, int x2, int y2, Tile t){
 		int locationValue = 0 ;
 		int destinationValue = 0;
@@ -518,7 +534,7 @@ public class Board implements Serializable{
 		}
 		return locationValue + destinationValue;
 	}
-	
+
 	public void movePiece(int fromX, int fromY, int toX, int toY){
 		if((calculatePath(fromX, fromY, toX, toY) > GameModel.getActionPoints())){
 			JOptionPane.showMessageDialog(null,"No enough action points remaining");
@@ -536,7 +552,50 @@ public class Board implements Serializable{
 		refreshMenuPanel();
 		frame.setVisible(true);
 	}
-	
+
+	public void score(){
+		for(int x = 0; x < grid.length; x++){
+			if(x % 2 == 0){
+				for(int y = 0; y < grid[0].length -1 ; y++){
+					if(!grid[x][y].isBlank()){
+						if(grid[x][y] instanceof Temple){
+							try {
+								grid[x][y].owner().addToScore(((Temple) grid[x][y]).getTempleValue());
+							} catch (NoOwnerException e) {
+							}
+						}
+						else{
+							try {
+								grid[x][y].owner().addToScore(1);
+							} catch (NoOwnerException e) {
+							}
+						}
+					}
+				}
+			}
+			else{
+				for(int y = 0; y < grid[0].length ; y++){
+					if(!grid[x][y].isBlank()){
+						if(grid[x][y] instanceof Temple){
+							try {
+								grid[x][y].owner().addToScore(((Temple) grid[x][y]).getTempleValue());
+							} catch (NoOwnerException e) {
+							}
+						}
+						else{
+							try {
+								grid[x][y].owner().addToScore(1);
+							} catch (NoOwnerException e) {
+							}
+						}
+					}
+				}
+			}
+
+		}
+	}
+
+
 	public int getPrevSelectedX(){
 		return prevSelectedX;
 	}

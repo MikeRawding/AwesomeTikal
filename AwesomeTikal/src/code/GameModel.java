@@ -128,6 +128,9 @@ public class GameModel implements Serializable {
 		for(int i = 0; i < p - 6; i++){
 			deck.push(new Temple(randomSides(),4));
 		}
+		for(int i = 0; i < playerList.size(); i++){
+			deck.push(new Volcano (new int[] {0,0,0,0,0,0}));
+		}
 		while(deck.size() < boardSize){
 			deck.push(new Tile(randomSides()));
 		}
@@ -182,7 +185,7 @@ public class GameModel implements Serializable {
 		GameModel.getPlayerList().add(p4);
 		
 		
-		GameModel.setColumnHeight();
+		setColumnHeight();
 		
 		initDeck();
 		

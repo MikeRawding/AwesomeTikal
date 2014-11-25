@@ -34,7 +34,7 @@ public class Tile {
 	
 	//constructor for making blank tiles to populate the board
 	public Tile(){
-		tilePanel.setBackground(Color.magenta);
+		tilePanel.setBackground(Color.DARK_GRAY);
 		tilePanel.setBorder(BorderFactory.createLineBorder(Color.black, 5, false));
 		tilePanel.setPreferredSize(new Dimension(250,180));
 		tilePanel.setMaximumSize(new Dimension(250,180));
@@ -203,6 +203,32 @@ public class Tile {
 	public boolean piecesPlaceable(){
 		return piecesPlaceable;
 	}
+	
+	public Player owner() throws NoOwnerException{
+		if(this.isUnoccupied()){
+			throw new NoOwnerException("This tile has no owner");
+		}
+		
+				
+		Entry<Player, ArrayList<Piece>> tempMax = pieces.entrySet().iterator().next();
+		boolean tie = false;
+		for (Entry<Player, ArrayList<Piece>> entry : pieces.entrySet()) {
+		    if(entry.getValue().size() > tempMax.getValue().size()){
+		    	tempMax = entry;
+		    	tie = false;
+		    }
+		    else if(entry.getValue().size() == tempMax.getValue().size() && entry.getKey() != tempMax.getKey()){
+		    	tie = true;
+		    }
+		}
+		
+		if(tie){
+			throw new NoOwnerException("This tile has no owner due to a tie");
+		}
+		else{
+			return tempMax.getKey();
+		}
+	}	
 	
 	public void setPiecesPlaceable(boolean b){
 		piecesPlaceable = b;

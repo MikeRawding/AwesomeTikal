@@ -61,6 +61,11 @@ public class Temple extends Tile {
 		return templeValue;
 	}
 	
+	public int getTempleValue(){
+		return templeValue;
+	}
+	
+	/*
 	public void setGuard(Player player) throws InvalidMoveException, NoOwnerException{
 		try{	
 			if(!(this.owner().equals(player))){
@@ -77,36 +82,8 @@ public class Temple extends Tile {
 		guard = player;
 		pieces.get(player).clear();
 	}
+	*/
 	
 	
-	public Player owner() throws UnoccupiedTileException, NoOwnerException{
-		if(isGuarded){
-			return guard;
-		}
-		if(this.isUnoccupied()){
-			throw new UnoccupiedTileException("This tile has no owner");
-		}
-		
-		
-		
-		Entry<Player, ArrayList<Piece>> tempMax = pieces.entrySet().iterator().next();
-		boolean tie = false;
-		for (Entry<Player, ArrayList<Piece>> entry : pieces.entrySet()) {
-		    if(entry.getValue().size() > tempMax.getValue().size()){
-		    	tempMax = entry;
-		    	tie = false;
-		    }
-		    else if(entry.getValue().size() == tempMax.getValue().size() && entry.getKey() != tempMax.getKey()){
-		    	tie = true;
-		    }
-		}
-		
-		if(tie){
-			throw new NoOwnerException("This tile has no owner due to a tie");
-		}
-		else{
-			return tempMax.getKey();
-		}
-	}
 
 }

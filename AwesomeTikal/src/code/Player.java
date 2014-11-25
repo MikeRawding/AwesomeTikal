@@ -11,8 +11,23 @@ public class Player implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private Color _color;
 	private String _name;
+	private int score;
 	
+	public int getScore(){
+		return score;
+	}
 	
+	public void setScore(int s){
+		score = s;
+	}
+	
+	public void addToScore(int a){
+		score += a;
+	}
+	
+	public String getName(){
+		return _name;
+	}
 	
 	private int piecesRemaining; 
 	
