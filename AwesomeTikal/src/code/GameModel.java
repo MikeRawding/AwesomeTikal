@@ -199,23 +199,20 @@ public class GameModel implements Serializable {
 		}
 	}
 	
+	private static Color randColor(){
+		Random r = new Random();
+		return new Color(r.nextFloat(), r.nextFloat(), r.nextFloat());
+	}
+	
 	
 	public static void main(String[] args) {
 		
 			
 		
-		
+		for(int i = 0; i < args.length; i++){
+			GameModel.getPlayerList().add(new Player(args[i],GameModel.randColor()));
+		}
 			
-		//Establish players
-		Player p1 = new Player("Tom", Color.cyan);
-		Player p2 = new Player("Mike", Color.ORANGE);
-		Player p3 = new Player("Tarik", Color.blue);
-		Player p4 = new Player("Taiga", Color.GRAY);
-		
-		GameModel.getPlayerList().add(p1);
-		GameModel.getPlayerList().add(p2);
-		GameModel.getPlayerList().add(p3);
-		GameModel.getPlayerList().add(p4);
 		
 		
 		setColumnHeight();

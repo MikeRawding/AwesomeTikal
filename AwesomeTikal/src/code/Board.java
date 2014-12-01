@@ -9,6 +9,7 @@ package code;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Frame;
 import java.io.Serializable;
 
@@ -116,9 +117,9 @@ public class Board implements Serializable{
 		//Make and add menu bar
 		menuPanel = new JPanel();
 		menuPanel.setLayout(new BoxLayout(menuPanel,1));
-		menuPanel.setPreferredSize(new Dimension(350, 9000));
-		menuPanel.setMaximumSize(new Dimension(350, 9000));
-		menuPanel.setMinimumSize(new Dimension(350, 9000));
+		menuPanel.setPreferredSize(new Dimension(325, 9000));
+		menuPanel.setMaximumSize(new Dimension(325, 9000));
+		menuPanel.setMinimumSize(new Dimension(325, 9000));
 
 
 		refreshMenuPanel();
@@ -190,10 +191,15 @@ public class Board implements Serializable{
 		//Scoreboard!!
 		JPanel scoreBoard = new JPanel();
 		scoreBoard.setLayout(new BoxLayout(scoreBoard, 1));
+		scoreBoard.setBackground(GameModel.getPlayer().getColor());
 		for(int i = 0; i  < GameModel.getPlayerList().size(); i++){
 			JLabel temp = new JLabel(GameModel.getPlayerList().get(i).getName() + ": " + GameModel.getPlayerList().get(i).getScore());
 			temp.setBackground(GameModel.getPlayerList().get(i).getColor());
 			temp.setOpaque(true);
+			temp.setFont(new Font(temp.getFont().getName(), Font.PLAIN, 26));
+			if(GameModel.getPlayerList().get(i).equals(GameModel.getPlayer())){
+				temp.setFont(new Font(temp.getFont().getName(), Font.BOLD, 30));
+			}
 			scoreBoard.add(temp);
 		}
 		menuPanel.add(scoreBoard);
@@ -201,6 +207,8 @@ public class Board implements Serializable{
 		//new tile preview
 		JPanel onDeckPreview = GameModel.getOnDeckTile().getTilePanel();
 		menuPanel.add(onDeckPreview);
+		
+		
 
 		frame.setVisible(true);
 		//frame.pack();
