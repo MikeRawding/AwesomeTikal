@@ -332,70 +332,131 @@ public class Board implements Serializable{
 
 	private boolean tilePlaceable(int x, int y){
 
-		if(grid[x][y] instanceof Volcano)
+		boolean v = false;
+		if(GameModel.getOnDeckTile() instanceof Volcano){v = true;}
 			
 		if(x%2==0){
 			if(isInGrid(x,y-1)){
-				if(!grid[x][y-1].isBlank() && calculatePath(x, y, x, y-1, GameModel.getOnDeckTile()) != 0){
-					return true;
+				if(!grid[x][y-1].isBlank()){
+					if(v){
+						return true;
+					}
+					else if(calculatePath(x, y, x, y-1, GameModel.getOnDeckTile()) != 0){
+						return true;
+					}
 				}
 			}
 			if(isInGrid(x+1,y)){
-				if(!grid[x+1][y].isBlank() && calculatePath(x, y, x+1, y, GameModel.getOnDeckTile()) != 0){
-					return true;
+				if(!grid[x+1][y].isBlank()){ 
+					if(v){
+						return true;
+					}
+					else if(calculatePath(x, y, x+1, y, GameModel.getOnDeckTile()) != 0){
+						return true;
+					}
 				}
 			}
 			if(isInGrid(x+1,y+1)){
-				if(!grid[x+1][y+1].isBlank() && calculatePath(x, y, x+1, y+1, GameModel.getOnDeckTile()) != 0){
-					return true;
+				if(!grid[x+1][y+1].isBlank()){
+					if(v){
+						return true;
+					}
+					else if(calculatePath(x, y, x+1, y+1, GameModel.getOnDeckTile()) != 0){
+						return true;
+					}
 				}
 			}
 			if(isInGrid(x,y+1)){
-				if(!grid[x][y+1].isBlank() && calculatePath(x, y, x, y+1, GameModel.getOnDeckTile()) != 0){
-					return true;
+				if(!grid[x][y+1].isBlank()){
+					if(v){
+						return true;
+					}
+					else if(calculatePath(x, y, x, y+1, GameModel.getOnDeckTile()) != 0){
+						return true;
+					}
 				}
 			}
 			if(isInGrid(x-1,y+1)){
-				if(!grid[x-1][y+1].isBlank() && calculatePath(x, y, x-1, y+1, GameModel.getOnDeckTile()) != 0){
-					return true;
+				if(!grid[x-1][y+1].isBlank()){
+					if(v){
+						return true;
+					}
+					else if(calculatePath(x, y, x-1, y+1, GameModel.getOnDeckTile()) != 0){
+						return true;
+					}
 				}
 			}
 			if(isInGrid(x-1,y)){
-				if(!grid[x-1][y].isBlank() && calculatePath(x, y, x-1, y, GameModel.getOnDeckTile()) != 0){
-					return true;
+				if(!grid[x-1][y].isBlank()){
+					if(v){
+						return true;
+					}
+					else if(calculatePath(x, y, x-1, y, GameModel.getOnDeckTile()) != 0){
+						return true;
+					}
 				}
 			}
 
 		}
 		else{
 			if(isInGrid(x,y-1)){
-				if(!grid[x][y-1].isBlank() && calculatePath(x, y, x, y-1, GameModel.getOnDeckTile()) != 0){
-					return true;
+				if(!grid[x][y-1].isBlank()){
+					if(v){
+						return true;
+					}
+					else if(calculatePath(x, y, x, y-1, GameModel.getOnDeckTile()) != 0){
+						return true;
+					}
 				}
 			}
 			if(isInGrid(x+1,y-1)){
-				if(!grid[x+1][y-1].isBlank() && calculatePath(x, y, x+1, y-1, GameModel.getOnDeckTile()) != 0){
-					return true;
+				if(!grid[x+1][y-1].isBlank()){
+					if(v){
+						return true;
+					}
+					else if(calculatePath(x, y, x+1, y-1, GameModel.getOnDeckTile()) != 0){
+						return true;
+					}
 				}
 			}
 			if(isInGrid(x+1,y)){
-				if(!grid[x+1][y].isBlank() && calculatePath(x, y, x+1, y, GameModel.getOnDeckTile()) != 0){
-					return true;
+				if(!grid[x+1][y].isBlank()){
+					if(v){
+						return true;
+					}
+					else if(calculatePath(x, y, x+1, y, GameModel.getOnDeckTile()) != 0){
+						return true;
+					}
 				}
 			}
 			if(isInGrid(x,y+1)){
-				if(!grid[x][y+1].isBlank() && calculatePath(x, y, x, y+1, GameModel.getOnDeckTile()) != 0){
-					return true;
+				if(!grid[x][y+1].isBlank()){
+					if(v){
+						return true;
+					}
+					else if(calculatePath(x, y, x, y+1, GameModel.getOnDeckTile()) != 0){
+						return true;
+					}
 				}
 			}
 			if(isInGrid(x-1,y)){
-				if(!grid[x-1][y].isBlank() && calculatePath(x, y, x-1, y, GameModel.getOnDeckTile()) != 0){
-					return true;
+				if(!grid[x-1][y].isBlank()){
+					if(v){
+						return true;
+					}
+					else if(calculatePath(x, y, x-1, y, GameModel.getOnDeckTile()) != 0){
+						return true;
+					}
 				}
 			}
 			if(isInGrid(x-1,y-1)){
-				if(!grid[x-1][y-1].isBlank() && calculatePath(x, y, x-1, y-1, GameModel.getOnDeckTile()) != 0){
-					return true;
+				if(!grid[x-1][y-1].isBlank()){
+					if(v){
+						return true;
+					}
+					else if(calculatePath(x, y, x-1, y-1, GameModel.getOnDeckTile()) != 0){
+						return true;
+					}
 				}
 			}
 		}
