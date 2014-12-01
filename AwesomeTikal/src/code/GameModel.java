@@ -220,6 +220,9 @@ public class GameModel implements Serializable {
 	public static void main(String[] args) {
 		
 			
+		if(args.length == 0){
+			JOptionPane.showMessageDialog(null, "Please run with player names for command line arguments");
+		}
 		
 		for(int i = 0; i < args.length; i++){
 			GameModel.getPlayerList().add(new Player(args[i],GameModel.randColor()));
@@ -228,7 +231,6 @@ public class GameModel implements Serializable {
 		
 		
 		setColumnHeight();
-		
 		initDeck();
 		initTemplePieces();
 		
