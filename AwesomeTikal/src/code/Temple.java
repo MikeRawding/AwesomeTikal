@@ -3,6 +3,7 @@ package code;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
@@ -73,6 +74,7 @@ public class Temple extends Tile {
 				JLabel temp = new JLabel(""+ent.getValue().size()+"");
 				temp.setBackground(ent.getKey().getColor());
 				temp.setOpaque(true);
+				temp.setFont(new Font(temp.getFont().getName(), Font.BOLD, 18));
 		        center.add(temp);
 	        }
 		}

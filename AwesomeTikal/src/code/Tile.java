@@ -3,6 +3,7 @@ package code;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -149,6 +150,7 @@ public class Tile {
 				JLabel temp = new JLabel(""+ent.getValue().size()+"");
 				temp.setBackground(ent.getKey().getColor());
 				temp.setOpaque(true);
+				temp.setFont(new Font(temp.getFont().getName(), Font.BOLD, 18));
 		        center.add(temp);
 	        }
 		}

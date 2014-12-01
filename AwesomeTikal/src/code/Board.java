@@ -117,9 +117,9 @@ public class Board implements Serializable{
 		//Make and add menu bar
 		menuPanel = new JPanel();
 		menuPanel.setLayout(new BoxLayout(menuPanel,1));
-		menuPanel.setPreferredSize(new Dimension(325, 9000));
-		menuPanel.setMaximumSize(new Dimension(325, 9000));
-		menuPanel.setMinimumSize(new Dimension(325, 9000));
+		menuPanel.setPreferredSize(new Dimension(250, 9000));
+		menuPanel.setMaximumSize(new Dimension(250, 9000));
+		menuPanel.setMinimumSize(new Dimension(250, 9000));
 
 
 		refreshMenuPanel();
@@ -142,15 +142,17 @@ public class Board implements Serializable{
 
 		menuPanel.setBackground(GameModel.getPlayer().getColor());
 
+		
+		//AP counter
+		JLabel aP = new JLabel("AP Remaining: "+GameModel.getActionPoints()+"");
+		aP.setFont(new Font(aP.getFont().getName(), Font.BOLD, 22));
+		menuPanel.add(aP);
+		
 		//endTurn button
 		JButton endTurn = new JButton("End Turn");
 		setButtonSize(endTurn);
 		endTurn.addActionListener(new EndTurnListener(this,menuPanel));
 		menuPanel.add(endTurn);
-
-		//AP counter
-		JLabel aP = new JLabel("Action Points Remaining: "+GameModel.getActionPoints()+"");
-		menuPanel.add(aP);
 
 
 		//rotate buttonOnDeck
@@ -198,6 +200,7 @@ public class Board implements Serializable{
 			temp.setOpaque(true);
 			temp.setFont(new Font(temp.getFont().getName(), Font.PLAIN, 26));
 			if(GameModel.getPlayerList().get(i).equals(GameModel.getPlayer())){
+				temp.setText(">" + temp.getText() + "<");
 				temp.setFont(new Font(temp.getFont().getName(), Font.BOLD, 30));
 			}
 			scoreBoard.add(temp);
@@ -206,8 +209,8 @@ public class Board implements Serializable{
 
 		//new tile preview
 		JPanel onDeckPreview = GameModel.getOnDeckTile().getTilePanel();
+		onDeckPreview.setAlignmentX(Component.LEFT_ALIGNMENT);
 		menuPanel.add(onDeckPreview);
-		
 		
 
 		frame.setVisible(true);
@@ -259,6 +262,7 @@ public class Board implements Serializable{
 			throw new NoActionPointsException("Sorry Not Enough Action Points");
 		}
 		if(tilePlaceable(selectedX, selectedY) || placingStarters){
+			t.getTilePanel().setAlignmentX(Component.CENTER_ALIGNMENT);
 			grid[selectedX][selectedY]= t;
 			grid[selectedX][selectedY].getTilePanel().addMouseListener(new SelectTileListener(this,selectedX,selectedY));
 			if(t instanceof Volcano){
@@ -299,7 +303,7 @@ public class Board implements Serializable{
 	}
 
 	private void makeTileSpace(Integer x, Integer y){
-		grid[x][y] = new Tile(); //creates new button 
+		grid[x][y] = new Tile(); //creates new Tile 
 		grid[x][y].getTilePanel().addMouseListener(new SelectTileListener(this,x,y));
 		columns[x].add(grid[x][y].getTilePanel()); //adds Tile to grid
 

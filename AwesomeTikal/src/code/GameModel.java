@@ -201,7 +201,19 @@ public class GameModel implements Serializable {
 	
 	private static Color randColor(){
 		Random r = new Random();
-		return new Color(r.nextFloat(), r.nextFloat(), r.nextFloat());
+		float red = r.nextFloat();
+		if(red < 0.3){
+			red += 0.5;
+		}
+		float green = r.nextFloat();
+		if(green < 0.3){
+			green += 0.5;
+		}
+		float blue = r.nextFloat();
+		if(blue < 0.3){
+			blue += 0.5;
+		}
+		return new Color(red, green, blue);
 	}
 	
 	
