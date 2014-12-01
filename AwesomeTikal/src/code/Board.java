@@ -34,6 +34,7 @@ import actionListeners.RotateListener;
 import actionListeners.SaveGameListener;
 import actionListeners.SelectTileListener;
 import actionListeners.SetTwoSelectionsListener;
+import actionListeners.TempleListener;
 
 public class Board implements Serializable{
 
@@ -256,6 +257,9 @@ public class Board implements Serializable{
 				score();
 				refreshMenuPanel();
 			}
+			if(t instanceof Temple){
+				((Temple) t).getTempleButton().addActionListener(new TempleListener(this, (Temple)t));
+			}
 			if(!placingStarters){
 				GameModel.setActionPoints(GameModel.getActionPoints()-3);
 			}
@@ -328,6 +332,8 @@ public class Board implements Serializable{
 
 	private boolean tilePlaceable(int x, int y){
 
+		if(grid[x][y] instanceof Volcano)
+			
 		if(x%2==0){
 			if(isInGrid(x,y-1)){
 				if(!grid[x][y-1].isBlank() && calculatePath(x, y, x, y-1, GameModel.getOnDeckTile()) != 0){
@@ -535,7 +541,10 @@ public class Board implements Serializable{
 		return locationValue + destinationValue;
 	}
 
-	public void movePiece(int fromX, int fromY, int toX, int toY){
+	public void movePiece(int fromX, int fromY, int toX, int toY) throws InvalidMoveException{
+		if(grid[toX][toY] instanceof Volcano){
+			throw new InvalidMoveException("You cannot place explorers on a Volcano Tile");
+		}
 		if((calculatePath(fromX, fromY, toX, toY) > GameModel.getActionPoints())){
 			JOptionPane.showMessageDialog(null,"No enough action points remaining");
 			return;
@@ -607,5 +616,9 @@ public class Board implements Serializable{
 	}
 	public int getSelectedY(){
 		return selectedY;
+	}
+
+	public void pack() {
+		frame.pack();
 	}
 }

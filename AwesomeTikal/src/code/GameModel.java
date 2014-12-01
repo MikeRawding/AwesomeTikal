@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import resources.InvalidMoveException;
 import resources.NoTilesRemainException;
 
 public class GameModel implements Serializable {
@@ -26,6 +27,8 @@ public class GameModel implements Serializable {
 	public static JPanel selectedTile;
 	private static int columnHeight;
 	private static Stack<Tile> deck;
+	private static int[] templePieces = new int[11];
+	private static int templesPlaced = 0;
 	
 	public static void setColumnHeight(){
 		System.out.println("Number of players is: " + playerList.size());
@@ -51,6 +54,7 @@ public class GameModel implements Serializable {
 			currentPlayer = 0;
 		}
 		actionPoints = 12;
+		templesPlaced = 0;
 		return playerList.get(currentPlayer);
 	}
 	
@@ -103,6 +107,19 @@ public class GameModel implements Serializable {
 		return columnHeight;
 	}
 
+	public static void initTemplePieces(){
+		templePieces[1] = 0;
+		templePieces[2] = 6;
+		templePieces[3] = 6;
+		templePieces[4] = 6;
+		templePieces[5] = 10;
+		templePieces[6] = 8;
+		templePieces[7] = 7;
+		templePieces[8] = 6;
+		templePieces[9] = 3;
+		templePieces[10] = 3;
+		
+	}
 
 	public static void initDeck(){
 		
@@ -165,6 +182,22 @@ public class GameModel implements Serializable {
 		return onDeckTile;
 	}
 
+	public static void removeTemplePiece(int value) throws InvalidMoveException{
+		if(templePieces[value] < 1){
+			throw new InvalidMoveException("No Temples Pieces of :" + value + "remain");
+		}
+		else if(templesPlaced > 1){
+			throw new InvalidMoveException("You have already placed 2 Temple Pieces this turn");
+		}
+		else if(actionPoints < 1){
+			throw new InvalidMoveException("You do not have enough Action Points");
+		}
+		else{
+			templePieces[value]--;
+			templesPlaced++;
+			actionPoints--;
+		}
+	}
 	
 	
 	public static void main(String[] args) {
@@ -188,7 +221,7 @@ public class GameModel implements Serializable {
 		setColumnHeight();
 		
 		initDeck();
-		
+		initTemplePieces();
 		
 		new Board();
 		

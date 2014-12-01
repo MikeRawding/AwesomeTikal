@@ -23,13 +23,15 @@ public class Tile {
 	protected HashMap<Player, ArrayList<Piece>> pieces = new HashMap<Player, ArrayList<Piece>>();
 	
 	private int[] sides;
-	private JPanel tilePanel = new JPanel();
+	protected JPanel tilePanel = new JPanel();
 	private JPanel top = new JPanel();
 	protected JPanel center = new JPanel();
 	private JPanel bottom = new JPanel();
 	private JPanel[] paths = new JPanel[6];
 	private boolean isBlank;
 	private boolean piecesPlaceable = false;
+	private Dimension verticalPathDimension = new Dimension(15,30);
+	private Dimension horizontalPathDimension = new Dimension(30,15);
 	
 	
 	//constructor for making blank tiles to populate the board
@@ -55,13 +57,13 @@ public class Tile {
 	
 	private void initPanel(){
 		tilePanel.setBorder(BorderFactory.createLineBorder(Color.black, 5, false));
+		
 		for(int i = 0; i < paths.length; i++){
 			paths[i] = new JPanel();
-			paths[i].setBorder(BorderFactory.createLineBorder(Color.black, 5, false));
-			paths[i].setBackground(Color.gray);
-			paths[i].add(new JLabel(""+sides[i]+""));
-			paths[i].setVisible(true);
 		}
+		
+		setSidePanels();
+		
 		tilePanel.setLayout(new BoxLayout(tilePanel, BoxLayout.Y_AXIS));
 		tilePanel.setPreferredSize(new Dimension(250, 180));
 		tilePanel.setMaximumSize(new Dimension(250,180));
@@ -71,16 +73,39 @@ public class Tile {
 		top.add(paths[0],BorderLayout.WEST);
 		top.add(paths[1],BorderLayout.NORTH);
 		top.add(paths[2],BorderLayout.EAST);
+		top.setBackground(Color.GRAY);
 		top.setVisible(true);
 		bottom.setLayout(new BorderLayout());
 		bottom.add(paths[3],BorderLayout.EAST);
 		bottom.add(paths[4],BorderLayout.SOUTH);
 		bottom.add(paths[5],BorderLayout.WEST);
+		bottom.setBackground(Color.GRAY);
 		bottom.setVisible(true);
+		center.setBackground(Color.GRAY);
+		center.setVisible(true);
 		tilePanel.add(top);
 		tilePanel.add(center);
-		center.setVisible(true);
 		tilePanel.add(bottom);
+	}
+
+	private void setSidePanels() {
+		for(int i = 0; i < paths.length; i++){
+			paths[i].removeAll();
+			paths[i].setBackground(Color.GRAY);
+			paths[i].setVisible(true);
+			if(i == 1 || i == 4){
+				paths[i].setLayout(new BoxLayout(paths[i],1));
+				for(int y = 0; y < sides[i]; y++){
+					paths[i].add(pathBlock(horizontalPathDimension));
+				}
+			}
+			else{
+				paths[i].setLayout(new BoxLayout(paths[i], 2));
+				for(int y = 0; y < sides[i]; y++){
+					paths[i].add(pathBlock(verticalPathDimension));
+				}
+			}
+		}
 	}
 	
 	
@@ -105,10 +130,7 @@ public class Tile {
 			sides[i]=sides[i-1]; 
 		}
 		sides[0] = temp;
-		for(int i = 0; i < paths.length; i ++){
-			paths[i].removeAll();
-			paths[i].add(new JLabel(""+sides[i]+""));
-		}
+		setSidePanels();
 	}
 		
 	public static void move(Player player,Tile location, Tile destination) throws InvalidMoveException, NoActionPointsException{
@@ -236,5 +258,16 @@ public class Tile {
 	
 	public int[] getSides(){
 		return sides;
+	}
+	
+	private JPanel pathBlock(Dimension size){
+		JPanel result = new JPanel();
+		result.setPreferredSize(size);
+		result.setMaximumSize(size);
+		result.setMinimumSize(size);
+		result.setBackground(Color.YELLOW);
+		result.setVisible(true);
+		result.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		return result;
 	}
 }
