@@ -9,6 +9,10 @@
  */
 
 
+//
+
+//
+// 	this is a new comment for grading
 
 package code;
 import java.awt.Color;
@@ -16,6 +20,9 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.Serializable;
 
 import javax.swing.BorderFactory;
@@ -28,7 +35,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.Border;
-
 
 import resources.*;
 import actionListeners.*;
@@ -55,6 +61,7 @@ public class Board implements Serializable{
 	private int starterY;
 	private boolean twoSelections = false; //used to keep track of previous selection
 	private boolean placingStarter = true;
+
 
 	/**
 	 * The only constructor of this class.  
@@ -666,7 +673,7 @@ public class Board implements Serializable{
 	 * Refreshes a column to display a change
 	 * @param x position is columns[] to be refreshed
 	 */
-	private void refreshColumn(int x) {
+	public void refreshColumn(int x) {
 		columns[x].removeAll();
 		if(x%2 == 0){
 			columns[x].add(spacer());
@@ -743,5 +750,6 @@ public class Board implements Serializable{
 		Component spacer = Box.createRigidArea(new Dimension(200,100));
 		return spacer;
 	}
+	
 
 }

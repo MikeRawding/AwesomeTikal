@@ -64,9 +64,19 @@ public class Temple extends Tile {
 		pieces.get(player).add(newPiece);
 		refreshCenterPanel();
 	}
+	protected Piece removePiece(Player player) throws InvalidMoveException{
+		
+		if(!(pieces.containsKey(player)) || pieces.get(player).size()<1){
+			throw new InvalidMoveException("That player does not have any pieces on this tile");
+		}
+		
+		Piece temp = pieces.get(player).remove(0);
+		refreshCenterPanel();
+		return temp;
+	}
 	
 
-	private void refreshCenterPanel(){
+	public void refreshCenterPanel(){
 		setButtonLabel();
 		center.removeAll();
 		System.out.println("temple refresh center ran");

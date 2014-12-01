@@ -170,9 +170,10 @@ public class Tile {
 	 */
 	public static void move(Player player,Tile location, Tile destination) throws InvalidMoveException, NoActionPointsException{
 		//removes a piece from the ArrayList in the HashMap for player in the location tile and adds said Piece to destination
-		
+
 		
 		destination.addPiece(player, location.removePiece(player));
+	
 	}
 	
 	private void refreshCenterPanel(){
@@ -233,7 +234,7 @@ public class Tile {
 	
 	
 	//removes first piece in the ArrayList corresponding to player in pieces
-	private Piece removePiece(Player player) throws InvalidMoveException{
+	protected Piece removePiece(Player player) throws InvalidMoveException{
 		
 		if(!(pieces.containsKey(player)) || pieces.get(player).size()<1){
 			throw new InvalidMoveException("That player does not have any pieces on this tile");
@@ -242,8 +243,6 @@ public class Tile {
 		Piece temp = pieces.get(player).remove(0);
 		refreshCenterPanel();
 		return temp;
-		
-	
 	}
 	
 	/**

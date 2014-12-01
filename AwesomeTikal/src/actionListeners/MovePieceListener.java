@@ -24,6 +24,7 @@ public class MovePieceListener implements ActionListener {
 		} catch (InvalidMoveException e1) {
 			JOptionPane.showMessageDialog(null, e1.getMessage());
 		}
+		b.refreshColumn(b.getPrevSelectedX());
 	}
 
 }
