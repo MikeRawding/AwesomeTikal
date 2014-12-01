@@ -222,6 +222,7 @@ public class GameModel implements Serializable {
 			
 		if(args.length == 0){
 			JOptionPane.showMessageDialog(null, "Please run with player names for command line arguments");
+			System.exit(0);
 		}
 		
 		for(int i = 0; i < args.length; i++){
