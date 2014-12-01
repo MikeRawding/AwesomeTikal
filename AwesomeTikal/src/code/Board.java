@@ -22,6 +22,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.border.Border;
 
 import actionListeners.AddPieceListener;
 import resources.InvalidMoveException;
@@ -55,7 +56,9 @@ public class Board implements Serializable{
 	private int prevSelectedX = 0;
 	private int prevSelectedY = 0;
 	private boolean twoSelections = false;
-	private boolean placingStarters = true;
+	private boolean placingStarter = true;
+	private int starterX;
+	private int starterY;
 
 	//The only constructor of this class.  GUI is displayed when constructed.
 	public Board(){
@@ -87,32 +90,6 @@ public class Board implements Serializable{
 		columns = new JPanel[GameModel.getColumnHeight()];
 		grid = new Tile[GameModel.getColumnHeight()][GameModel.getColumnHeight()];
 		populateColumns(boardPanel);
-
-
-		//sets starting tile
-		try {
-			placeTile(new Tile(new int[]{0,1,2,3,4,5}));
-		} catch (InvalidMoveException | NoActionPointsException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage());
-			e.printStackTrace();
-		}
-		grid[selectedX][selectedY].setPiecesPlaceable(true);
-		selectedX = 1;
-		try {
-			placeTile(new Tile(new int[]{0,0,0,2,1,0}));
-		} catch (InvalidMoveException | NoActionPointsException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage());
-			e.printStackTrace();
-		}
-		selectedX = 0;
-		selectedY = 1;
-		try {
-			placeTile(new Tile(new int[]{0,1,1,2,1,0}));
-		} catch (InvalidMoveException | NoActionPointsException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage());
-			e.printStackTrace();
-		}
-		placingStarters = false;
 
 		//Make and add menu bar
 		menuPanel = new JPanel();
@@ -168,7 +145,7 @@ public class Board implements Serializable{
 		menuPanel.add(placeTile);
 
 		//add piece to board button
-		JButton addPieceToBoard = new JButton("Add piece to selected tile");
+		JButton addPieceToBoard = new JButton("Add piece board");
 		setButtonSize(addPieceToBoard);
 		addPieceToBoard.addActionListener(new AddPieceListener(this));
 		menuPanel.add(addPieceToBoard);
@@ -261,9 +238,19 @@ public class Board implements Serializable{
 		else if(GameModel.getActionPoints() < 3){
 			throw new NoActionPointsException("Sorry Not Enough Action Points");
 		}
-		if(tilePlaceable(selectedX, selectedY) || placingStarters){
-			t.getTilePanel().setAlignmentX(Component.CENTER_ALIGNMENT);
+		else if(placingStarter){
+			if(!onEdge(selectedX, selectedY)){
+				throw new InvalidMoveException("The First Tile must be placed on and edge");
+			}
+		}
+		if(tilePlaceable(selectedX, selectedY)){
+			if(placingStarter){
+				starterX = selectedX;
+				starterY = selectedY;
+				t.setTileBackground(Color.pink);
+			}
 			grid[selectedX][selectedY]= t;
+			placingStarter = false;
 			grid[selectedX][selectedY].getTilePanel().addMouseListener(new SelectTileListener(this,selectedX,selectedY));
 			if(t instanceof Volcano){
 				score();
@@ -272,15 +259,36 @@ public class Board implements Serializable{
 			if(t instanceof Temple){
 				((Temple) t).getTempleButton().addActionListener(new TempleListener(this, (Temple)t));
 			}
-			if(!placingStarters){
-				GameModel.setActionPoints(GameModel.getActionPoints()-3);
-			}
+			GameModel.setActionPoints(GameModel.getActionPoints()-3);
+			grid[selectedX][selectedY].getTilePanel().setAlignmentX(Component.CENTER_ALIGNMENT);
 			refreshColumn(selectedX);
 		}
 		else{
 			throw new InvalidMoveException("There must be a path to the tile you are placing");
 		}
 
+	}
+
+	private boolean onEdge(int x, int y) {
+		if(x == 0){
+			return true;
+		}
+		else if(x == GameModel.getColumnHeight()-1){
+			return true;
+		}
+		else if(y == 0){
+			return true;
+		}
+		else if(x % 2 == 0){
+			if(y == GameModel.getColumnHeight()-2){
+				return true;
+			}
+		}
+		else if(y == GameModel.getColumnHeight()-1){
+			return true;
+		}
+		
+		return false;
 	}
 
 	private void refreshColumn(int x) {
@@ -344,6 +352,9 @@ public class Board implements Serializable{
 
 	private boolean tilePlaceable(int x, int y){
 
+		if(placingStarter && onEdge(x,y)){
+			return true;
+		}
 		boolean v = false;
 		if(GameModel.getOnDeckTile() instanceof Volcano){v = true;}
 			
@@ -379,24 +390,26 @@ public class Board implements Serializable{
 				}
 			}
 			if(isInGrid(x,y+1)){
-				if(!grid[x][y+1].isBlank()){
-					if(v){
-						return true;
+					if(y + 1 != GameModel.getColumnHeight()-1){
+						if (!grid[x][y + 1].isBlank()) {
+							if (v) {
+								return true;
+							} else if (calculatePath(x, y, x, y + 1,
+									GameModel.getOnDeckTile()) != 0) {
+								return true;
+							}
+						}
 					}
-					else if(calculatePath(x, y, x, y+1, GameModel.getOnDeckTile()) != 0){
-						return true;
-					}
-				}
 			}
 			if(isInGrid(x-1,y+1)){
-				if(!grid[x-1][y+1].isBlank()){
-					if(v){
-						return true;
+					if(!grid[x-1][y+1].isBlank()){
+						if(v){
+							return true;
+						}
+						else if(calculatePath(x, y, x-1, y+1, GameModel.getOnDeckTile()) != 0){
+							return true;
+						}
 					}
-					else if(calculatePath(x, y, x-1, y+1, GameModel.getOnDeckTile()) != 0){
-						return true;
-					}
-				}
 			}
 			if(isInGrid(x-1,y)){
 				if(!grid[x-1][y].isBlank()){
@@ -432,12 +445,14 @@ public class Board implements Serializable{
 				}
 			}
 			if(isInGrid(x+1,y)){
-				if(!grid[x+1][y].isBlank()){
-					if(v){
-						return true;
-					}
-					else if(calculatePath(x, y, x+1, y, GameModel.getOnDeckTile()) != 0){
-						return true;
+				if(y != GameModel.getColumnHeight()-1){
+					if (!grid[x+1][y].isBlank()) {
+						if (v) {
+							return true;
+						} else if (calculatePath(x, y, x + 1, y,
+								GameModel.getOnDeckTile()) != 0) {
+							return true;
+						}
 					}
 				}
 			}
@@ -452,12 +467,14 @@ public class Board implements Serializable{
 				}
 			}
 			if(isInGrid(x-1,y)){
-				if(!grid[x-1][y].isBlank()){
-					if(v){
-						return true;
-					}
-					else if(calculatePath(x, y, x-1, y, GameModel.getOnDeckTile()) != 0){
-						return true;
+				if(y  != GameModel.getColumnHeight()-1){
+					if (!grid[x - 1][y].isBlank()) {
+						if (v) {
+							return true;
+						} else if (calculatePath(x, y, x - 1, y,
+								GameModel.getOnDeckTile()) != 0) {
+							return true;
+						}
 					}
 				}
 			}
@@ -693,5 +710,9 @@ public class Board implements Serializable{
 
 	public void pack() {
 		frame.pack();
+	}
+
+	public Tile getStarterTile() {
+		return grid[starterX][starterY];
 	}
 }

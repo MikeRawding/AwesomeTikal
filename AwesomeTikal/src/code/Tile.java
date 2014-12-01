@@ -109,6 +109,14 @@ public class Tile {
 		}
 	}
 	
+	public void setTileBackground(Color c){
+		top.setBackground(c);
+		center.setBackground(c);
+		bottom.setBackground(c);
+		for(int i = 0; i < paths.length; i++){
+			paths[i].setBackground(c);
+		}
+	}
 	
 	
 	public void rotateCounterClockwise(){
@@ -150,7 +158,7 @@ public class Tile {
 				JLabel temp = new JLabel(""+ent.getValue().size()+"");
 				temp.setBackground(ent.getKey().getColor());
 				temp.setOpaque(true);
-				temp.setFont(new Font(temp.getFont().getName(), Font.BOLD, 18));
+				temp.setFont(new Font(temp.getFont().getName(), Font.BOLD, 22));
 		        center.add(temp);
 	        }
 		}
@@ -173,9 +181,6 @@ public class Tile {
 		
 		if(player.getPiecesRemaing() == 0){
 			JOptionPane.showMessageDialog(null, "You have no exploreres remaining");
-		}
-		else if(!piecesPlaceable){
-			JOptionPane.showMessageDialog(null, "You can only add pieces to the starting tile");
 		}
 		else if(GameModel.getActionPoints() == 0){
 			JOptionPane.showMessageDialog(null, "Sorry Not Enough Action Points");

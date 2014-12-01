@@ -148,7 +148,7 @@ public class GameModel implements Serializable {
 		for(int i = 0; i < playerList.size(); i++){
 			deck.push(new Volcano (new int[] {0,0,0,0,0,0}));
 		}
-		while(deck.size() < boardSize){
+		while(deck.size() < boardSize + 1){
 			deck.push(new Tile(randomSides()));
 		}
 		System.out.println(deck.size());
