@@ -26,7 +26,7 @@ public class AddPieceListener implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		b.getStarterTile().addPieceToBoard(GameModel.getPlayer(), new Piece(GameModel.getPlayer()));
+		b.getStarterTile().addPieceToBoard(GameModel.getCurrentPlayer(), new Piece(GameModel.getCurrentPlayer()));
 		b.refreshMenuPanel();
 	}
 

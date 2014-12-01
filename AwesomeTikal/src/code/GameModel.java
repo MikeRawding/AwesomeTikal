@@ -1,9 +1,6 @@
 package code;
 
 import java.awt.Color;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,7 +19,6 @@ public class GameModel implements Serializable {
 	private static ArrayList<Player> playerList = new ArrayList<Player>();
 	private static int currentPlayer = 0;
 	private static int actionPoints = 12;
-	private static JLabel _currentAP;
 	private static Tile onDeckTile;
 	public static JPanel selectedTile;
 	private static int columnHeight;
@@ -30,7 +26,7 @@ public class GameModel implements Serializable {
 	private static int[] templePieces = new int[11];
 	private static int templesPlaced = 0;
 	
-	public static void setColumnHeight(){
+	private static void setColumnHeight(){
 		System.out.println("Number of players is: " + playerList.size());
 	
 		int i = 0;
@@ -40,12 +36,17 @@ public class GameModel implements Serializable {
 		columnHeight = i;
 		System.out.println("columnHeight set to: " + columnHeight);
 	}
-	
-	
-	public static Player getPlayer(){
+	/**
+	 * 
+	 * @return The Player whose turn it currently is.
+	 */
+	public static Player getCurrentPlayer(){
 		return playerList.get(currentPlayer);
 	}
-	
+	/**
+	 * Changes currentPlayer to the next Player in line.
+	 * @return The new currentPlayer
+	 */
 	public static Player nextPlayer(){
 		if(currentPlayer < playerList.size()-1){
 			currentPlayer++;
@@ -58,10 +59,19 @@ public class GameModel implements Serializable {
 		return playerList.get(currentPlayer);
 	}
 	
+	/**
+	 * 
+	 * @return Current Action Points.
+	 */
 	public static int getActionPoints(){
 		return actionPoints;
 	}
 	
+	/**
+	 * Mutator for actionPoints
+	 * 
+	 * @param in Desired Action Points.
+	 */
 	public static void setActionPoints(int in){
 		actionPoints = in;
 	}
@@ -71,27 +81,19 @@ public class GameModel implements Serializable {
 		
 	}
 	
+	/**
+	 * 
+	 * @return List of Players in the game.
+	 */
 	public static ArrayList<Player> getPlayerList(){
 		return playerList;
 	}
 	
-	
-	 //Accessor method modified by daziana
-    public static JLabel getCurrentAP(){
-        return _currentAP;
-    }
-
- //reduce AP method changed by daziana
-        public void reduceAP(int i){
-            if (actionPoints >=i) {
-            actionPoints  = actionPoints-i;
-             _currentAP.setText(String.valueOf(actionPoints));
-           } else {
-               //message pops up
-               JOptionPane.showMessageDialog(null, "Sorry Not Enough Action Points ");
-        }
-    }
-	
+	/**
+	 * Sets the On Deck Tile to the next Tile in the deck.
+	 * @return The new On Deck Tile
+	 * @throws NoTilesRemainException No Tiles are left in the deck (game over).
+	 */
 	public static Tile nextTile() throws NoTilesRemainException{
 		if(!deck.isEmpty()){
 			onDeckTile = deck.pop();
@@ -103,11 +105,15 @@ public class GameModel implements Serializable {
 		}
 	}
 	
+	/**
+	 * 
+	 * @return The height of the odd(longer) columns
+	 */
 	public static int getColumnHeight(){
 		return columnHeight;
 	}
 
-	public static void initTemplePieces(){
+	private static void initTemplePieces(){
 		templePieces[1] = 0;
 		templePieces[2] = 6;
 		templePieces[3] = 6;
@@ -121,7 +127,7 @@ public class GameModel implements Serializable {
 		
 	}
 
-	public static void initDeck(){
+	private static void initDeck(){
 		
 		deck = new Stack<Tile>();
 		int boardSize = (columnHeight * columnHeight) - (columnHeight/2);
@@ -153,10 +159,12 @@ public class GameModel implements Serializable {
 		}
 		System.out.println(deck.size());
 		Collections.shuffle(deck);
+		while(deck.peek() instanceof Volcano){
+			Collections.shuffle(deck);
+		}
 		onDeckTile = deck.pop();
 		
 	}
-	
 	
 	private static int[] randomSides(){
 		int[] result = new int[6];
@@ -178,10 +186,20 @@ public class GameModel implements Serializable {
 		return result;
 	}
 	
+	/**
+	 * 
+	 * @return On Deck Tile
+	 */
 	public static Tile getOnDeckTile(){
 		return onDeckTile;
 	}
 
+	/**
+	 * Removes a temple piece of the input value from the array of available pieces
+	 * 
+	 * @param value
+	 * @throws InvalidMoveException If no pieces of that value remain, two Temples have been placed this turn, or insufficient AP.
+	 */
 	public static void removeTemplePiece(int value) throws InvalidMoveException{
 		if(templePieces[value] < 1){
 			throw new InvalidMoveException("No Temples Pieces of :" + value + "remain");
@@ -189,13 +207,13 @@ public class GameModel implements Serializable {
 		else if(templesPlaced > 1){
 			throw new InvalidMoveException("You have already placed 2 Temple Pieces this turn");
 		}
-		else if(actionPoints < 1){
+		else if(actionPoints < 3){
 			throw new InvalidMoveException("You do not have enough Action Points");
 		}
 		else{
 			templePieces[value]--;
 			templesPlaced++;
-			actionPoints--;
+			actionPoints -= 3;
 		}
 	}
 	
@@ -216,7 +234,11 @@ public class GameModel implements Serializable {
 		return new Color(red, green, blue);
 	}
 	
-	
+	/**
+	 * Adds players to the Player List, makes adjustments for board size, initializes Deck, initializes and displays Board.
+	 * 
+	 * @param args Player names separated by spaces
+	 */
 	public static void main(String[] args) {
 		
 			
@@ -228,80 +250,12 @@ public class GameModel implements Serializable {
 		for(int i = 0; i < args.length; i++){
 			GameModel.getPlayerList().add(new Player(args[i],GameModel.randColor()));
 		}
-			
-		
 		
 		setColumnHeight();
 		initDeck();
 		initTemplePieces();
 		
 		new Board();
-		
-		
-		
-		
-		
-		
-		
-		
-		//Game scoring methods ADDED BY DAZIANA ON 11/17
-		
-		/*   
-		 public static scoreGame(){
-		    	
-		    	int play1 = 0;
-		    	int play2 = 0;
-		    	
-		    	HashMap<Player, Integer> scores = new HashMap<Player, Integer>();
-		    	
-		    	
-		    	for (int x =0; x < grid.length;x++){
-		    		//goes through each tile in each column
-		    		for (int y = 0; y < grid[0].length;y++){
-		    			if (grid[x][y]isatemple){
-		    				
-		    				scores.put(tile.owner,pieces.get(tile.owner)+grid[x][y].getValue());
-		    				
-		    				if (tile.get_play1() > tile.get_play2()){
-		    					if (tile.get_pyramid_level() > 0){
-		    						play1 += tile.get_pyramid_level();
-		    					}
-		    					else{play1++;}
-		    				}
-		    				else if (tile.get_play1() < tile.get_play2()){
-		    					if (tile.get_pyramid_level() > 0){
-		    						play2 += tile.get_pyramid_level();
-		    					}
-		    					else{play2++;}
-		    				}
-		    			}
-		    			
-		    		}
-		    	}
-		    	return max value in score(hashmap)
-		    	
-		    	if (play1 > play2){
-		    		JOptionPane.showMessageDialog(null, "Player1 WINS, your score is "+play1);
-		    	}
-		    	else if (play2 > play1){
-		    		JOptionPane.showMessageDialog(null, "Player2 WINS, your score is "+play2);
-		    		
-
-		    	}// when play1 = play2 its a draw
-		    	else{
-		    		JOptionPane.showMessageDialog(null, "Draw!");
-		    		}
-		    	
-		    	
-		    }
-				*/
-
-		
-		
-		
-		
-		
 
 	}
-
 }

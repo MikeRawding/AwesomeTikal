@@ -35,7 +35,9 @@ public class Tile {
 	private Dimension horizontalPathDimension = new Dimension(30,15);
 	
 	
-	//constructor for making blank tiles to populate the board
+	/**
+	 * Constructor used for making black Tiles.  Used to initially populate the Board.
+	 */
 	public Tile(){
 		tilePanel.setBackground(Color.DARK_GRAY);
 		tilePanel.setBorder(BorderFactory.createLineBorder(Color.black, 5, false));
@@ -45,16 +47,22 @@ public class Tile {
 		isBlank = true;
 	}
 	
-	//constructor for making tiles in the deck
+	/**
+	 * Constructor used for making tiles in the deck.
+	 */
 	public Tile(int[] sides){
 		this.sides = sides;
 		initPanel();
 		isBlank = false;
 	}
-	
+	/**
+	 * 
+	 * @return The Tile Panel
+	 */
 	public JPanel getTilePanel(){
 		return tilePanel;
 	}
+	
 	
 	private void initPanel(){
 		tilePanel.setBorder(BorderFactory.createLineBorder(Color.black, 5, false));
@@ -109,6 +117,10 @@ public class Tile {
 		}
 	}
 	
+	/**
+	 * Sets the background color of a Tile panel.  Used to set the first Tile placed to an identifiable color.
+	 * @param c Color for the tile background
+	 */
 	public void setTileBackground(Color c){
 		top.setBackground(c);
 		center.setBackground(c);
@@ -118,7 +130,9 @@ public class Tile {
 		}
 	}
 	
-	
+	/**
+	 * Rotates the path blocks counter clockwise around the sides of the Tile panel.
+	 */
 	public void rotateCounterClockwise(){
 		//decrements the values in sides[]. i.e. sides[0] gets sides[1], sides[sides.length] gets sides[0]
 		int temp = sides[0];
@@ -132,6 +146,9 @@ public class Tile {
 		}
 	}
 	
+	/**
+	 * Rotates the path blocks clockwise around the sides of the Tile panel. C
+	 */
 	public void rotateClockwise(){
 		//increments the values in sides[]. i.e. sides[1] gets sides[0], sides [0] gets sides[sides.length]
 		int temp = sides[sides.length-1];
@@ -142,6 +159,15 @@ public class Tile {
 		setSidePanels();
 	}
 		
+	/**
+	 * Moves a Piece between two Tiles.
+	 * 
+	 * @param player The Player whose Piece should be moved. 
+	 * @param location The current location of the Piece.
+	 * @param destination The destination of the Piece.
+	 * @throws InvalidMoveException Use .getMessage() for more info.
+	 * @throws NoActionPointsException Must have 2 AP remaining.
+	 */
 	public static void move(Player player,Tile location, Tile destination) throws InvalidMoveException, NoActionPointsException{
 		//removes a piece from the ArrayList in the HashMap for player in the location tile and adds said Piece to destination
 		
@@ -165,7 +191,12 @@ public class Tile {
 		
 	}
 	
-	//adds piece to HashMap pieces.  If player is not a Key in pieces, it is added first
+	/**
+	 * Adds a piece to the Tile
+	 * 
+	 * @param player Player whose Piece is being added.
+	 * @param newPiece Piece to be added.
+	 */
 	public void addPiece(Player player, Piece newPiece){
 		
 				
@@ -176,26 +207,33 @@ public class Tile {
 		refreshCenterPanel();
 	}
 	
+	/**
+	 * Adds a Piece to the first Tile placed.
+	 * 
+	 * @param player Player whose Piece is being added to the board.
+	 * @param newPiece The Piece to be added to the board.
+	 */
 	public void addPieceToBoard(Player player, Piece newPiece){
 		//similar to addPiece method, but decrements piecesRemaining in player
 		
 		if(player.getPiecesRemaing() == 0){
 			JOptionPane.showMessageDialog(null, "You have no exploreres remaining");
 		}
-		else if(GameModel.getActionPoints() == 0){
+		else if(GameModel.getActionPoints() < 2){
 			JOptionPane.showMessageDialog(null, "Sorry Not Enough Action Points");
 		}
 		else{
 			player.setPiecesRemaining(player.getPiecesRemaing()-1);
-			GameModel.setActionPoints(GameModel.getActionPoints()-1);
+			GameModel.setActionPoints(GameModel.getActionPoints()-2);
 			addPiece(player, newPiece);
 		}
 		
 				
 	}
 	
-	public Piece removePiece(Player player) throws InvalidMoveException{
-		//removes first piece in the ArrayList corresponding to player in pieces
+	
+	//removes first piece in the ArrayList corresponding to player in pieces
+	private Piece removePiece(Player player) throws InvalidMoveException{
 		
 		if(!(pieces.containsKey(player)) || pieces.get(player).size()<1){
 			throw new InvalidMoveException("That player does not have any pieces on this tile");
@@ -208,10 +246,10 @@ public class Tile {
 	
 	}
 	
-	public HashMap<Player, ArrayList<Piece>> getPieces(){
-		return pieces;
-	}
-
+	/**
+	 * 
+	 * @return Returns true if there are no Explorers on the Tile.
+	 */
 	public boolean isUnoccupied(){
 		//returns true if pieces is empty or if each ArrayList in pieces is size 0
 		if(pieces.isEmpty()){
@@ -225,6 +263,10 @@ public class Tile {
 		return true;	
 	}
 		
+	/**
+	 * 
+	 * @return Returns true if the Tile is blank (was used for populating the board, not from deck).
+	 */
 	public boolean isBlank(){
 		return isBlank;
 	}
@@ -259,10 +301,10 @@ public class Tile {
 		}
 	}	
 	
-	public void setPiecesPlaceable(boolean b){
-		piecesPlaceable = b;
-	}
-	
+	/**
+	 * 
+	 * @return The int array of sides. Index 0-5 for location. Value 0-2 for path blocks.
+	 */
 	public int[] getSides(){
 		return sides;
 	}

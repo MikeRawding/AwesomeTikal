@@ -51,10 +51,13 @@ public class Temple extends Tile {
 		templeButton.add(new JLabel(""+ templeValue));
 	}
 
-	//adds piece to HashMap pieces.  If player is not a Key in pieces, it is added first
+	/**
+	 * Adds a piece to the Temple
+	 * 
+	 * @param player Player whose Piece is being added.
+	 * @param newPiece Piece to be added.
+	 */
 	public void addPiece(Player player, Piece newPiece){
-		
-				
 		if(!(pieces.containsKey(player))){
 			pieces.put(player, new ArrayList<Piece>());
 		}
@@ -62,6 +65,7 @@ public class Temple extends Tile {
 		refreshCenterPanel();
 	}
 	
+
 	private void refreshCenterPanel(){
 		setButtonLabel();
 		center.removeAll();
@@ -81,18 +85,30 @@ public class Temple extends Tile {
 		
 	}
 	
-	
+	/**
+	 * 
+	 * @return The value of the Temple
+	 */
 	public int getTempleValue(){
 		return templeValue;
 	}
 	
+	/**
+	 * 
+	 * @return Button to increment the Temple.
+	 */
 	public JButton getTempleButton(){
 		return templeButton;
 	}
 	
+	/**
+	 * Increments the value of the Temple by 1.
+	 * 
+	 * @throws InvalidMoveException Use .getMessage() for more info.
+	 */
 	public void incrementTempleValue() throws InvalidMoveException{
 		try {
-			if(GameModel.getPlayer() != this.owner()){
+			if(GameModel.getCurrentPlayer() != this.owner()){
 				throw new InvalidMoveException("You are not the owner of this tile");
 			}
 		} catch (NoOwnerException e) {
@@ -105,27 +121,4 @@ public class Temple extends Tile {
 		templeValue++;
 		refreshCenterPanel();
 	}
-	
-	
-	/*
-	public void setGuard(Player player) throws InvalidMoveException, NoOwnerException{
-		try{	
-			if(!(this.owner().equals(player))){
-				throw new InvalidMoveException("You must be the owner of the tile to guard a temple");
-			}
-		}
-		catch(UnoccupiedTileException e){
-			throw new InvalidMoveException("You must be the owner of the tile to guard a temple");
-		}
-		if(this.isGuarded){
-			throw new InvalidMoveException("This temple is already guarded by another player");
-		}
-		isGuarded = true;
-		guard = player;
-		pieces.get(player).clear();
-	}
-	*/
-	
-	
-
 }

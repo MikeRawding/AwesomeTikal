@@ -27,6 +27,7 @@ public class TempleListener implements ActionListener {
 		} catch (InvalidMoveException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
+		board.refreshMenuPanel();
 		board.pack();
 
 	}

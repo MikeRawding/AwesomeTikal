@@ -24,7 +24,6 @@ public class MovePieceListener implements ActionListener {
 		} catch (InvalidMoveException e1) {
 			JOptionPane.showMessageDialog(null, e1.getMessage());
 		}
-		System.out.println(b.calculatePath(b.getPrevSelectedX(), b.getPrevSelectedY(), b.getSelectedX(), b.getSelectedY()));
 	}
 
 }
